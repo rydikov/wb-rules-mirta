@@ -1,0 +1,15 @@
+{
+  "extends": "@mirta/tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "@wbm/*": [
+        "./src/wb-rules-modules/*"
+      ]
+    },
+    "types": [
+      "@mirta/globals",
+      "node",
+      "vitest/globals"
+    ]
+  }
+}
