@@ -22,8 +22,8 @@ importers:
         specifier: 0.0.5
         version: 0.0.5
       '@mirta/rollup':
-        specifier: 0.0.4
-        version: 0.0.4(rollup@4.46.2)
+        specifier: 0.0.6
+        version: 0.0.6(rollup@4.46.2)
       '@mirta/tsconfig':
         specifier: 0.0.4
         version: 0.0.4
@@ -805,8 +805,11 @@ packages:
   '@mirta/polyfills@0.0.4':
     resolution: {integrity: sha512-d1LEhln0L0BOcljAZx/O1WPI1a+Cw6nYbCba4V5RU6zQ6lj7TutJN+e+0y4W4OBkjMIJdl3kUjC+q1V+bZhmHw==}
 
-  '@mirta/rollup@0.0.4':
-    resolution: {integrity: sha512-HytW/X8GBnyNUxlcOWfH71r2ASLqfAkjhGIg4aOKy8HLOP3NtBjLscn8nhMxxv6ssEnWxHrfcNJ95THelWteiw==}
+  '@mirta/polyfills@0.0.6':
+    resolution: {integrity: sha512-pT6ESA94BNBVXol/cqBGMbu+mHf6Lr8U1Ldx63eRMujUaKcygZj40kQCJWokUHU+4+GbOxstztecxzv993oomg==}
+
+  '@mirta/rollup@0.0.6':
+    resolution: {integrity: sha512-mUUgnrS7WfGKz9rNmlwqCQvmjS6qOx6cQVkyMUvGeisxszE6YRg8jESrW8F+8TaqICn9sZS1hmYm9r6HIgLbFw==}
 
   '@mirta/store@0.0.4':
     resolution: {integrity: sha512-Qbw4oCwBYWHFb/g/+7R/Jrua4X+uLvFifXm1kdNsYMTNFU24UMwdocUcqzi+IGk6uTa4UeG/hnxKDtDew9gpEw==}
@@ -2861,12 +2864,14 @@ snapshots:
 
   '@mirta/polyfills@0.0.4': {}
 
-  '@mirta/rollup@0.0.4(rollup@4.46.2)':
+  '@mirta/polyfills@0.0.6': {}
+
+  '@mirta/rollup@0.0.6(rollup@4.46.2)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/preset-env': 7.28.0(@babel/core@7.28.0)
       '@dotenv-run/rollup': 1.3.7(rollup@4.46.2)
-      '@mirta/polyfills': 0.0.4
+      '@mirta/polyfills': 0.0.6
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.0)(rollup@4.46.2)
       '@rollup/plugin-multi-entry': 6.0.1(rollup@4.46.2)
       '@rollup/plugin-node-resolve': 16.0.1(rollup@4.46.2)

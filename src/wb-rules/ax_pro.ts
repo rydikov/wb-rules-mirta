@@ -11,7 +11,6 @@ const ciaToState: Record<string, number> = {
   '1401': 3,
 }
 
-// TODO: Remove values, not used
 const patritionsWithDevaces: Record<string, string> = {
   '01': 'AxPro/state_01',
   '02': 'AxPro/state_02',
@@ -56,10 +55,13 @@ trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => 
   const { cia_code, group_or_partition_number } = JSON.parse(message.value) as PartitionMessage
 
   const state = ciaToState[cia_code]
+  const partition = patritionsWithDevaces[group_or_partition_number]
 
-  if (state && group_or_partition_number in patritionsWithDevaces) {
+  const control = getControl(partition)
 
-    dev[`AxPro/state_0${group_or_partition_number}`] = state
+  if (state && control) {
+
+    control.setValue(state)
 
   }
 
