@@ -1,14 +1,10 @@
-defineRule('MASTER_CONTROL', {
-  whenChanged: 'wb-mcm8_138/Input 7',
-  then: function (newValue) {
+import { useMasterControl } from '@wbm/master-control'
 
-    if (newValue) {
-
-      log.debug('Весь свет выключен')
-      dev['wb-mrm2-mini_40/K1'] = false
-      dev['wb-mrm2-mini_40/K2'] = false
-
-    }
-
-  },
+useMasterControl({
+  ruleName: 'MASTER_CONTROL',
+  control: 'wb-mcm8_138/Input 7',
+  loads: [
+    'wb-mrm2-mini_40/K1',
+    'wb-mrm2-mini_40/K2',
+  ],
 })

@@ -52,10 +52,10 @@ trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => 
 
   log.debug('name: {}, value: {}'.format(message.topic, message.value))
 
-  const { cia_code, group_or_partition_number } = JSON.parse(message.value) as PartitionMessage
+  const value = JSON.parse(message.value) as PartitionMessage
 
-  const state = ciaToState[cia_code]
-  const partition = patritionsWithDevaces[group_or_partition_number]
+  const state = ciaToState[value.cia_code]
+  const partition = patritionsWithDevaces[value.group_or_partition_number]
 
   const control = getControl(partition)
 
