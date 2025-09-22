@@ -11,5 +11,12 @@
       "node",
       "vitest/globals"
     ]
-  }
+  },
+  "include": [
+    "*.ts",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "types/**/*.d.ts"
+  ]
 }

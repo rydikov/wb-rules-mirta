@@ -1,13 +1,26 @@
 import js from '@eslint/js'
 import globals from 'globals'
+import globalsMirta from '@mirta/globals/eslint'
 import tseslint from 'typescript-eslint'
 import stylistic from '@stylistic/eslint-plugin'
-import vitest from 'eslint-plugin-vitest'
+import vitest from '@vitest/eslint-plugin'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], plugins: { js }, extends: ['js/recommended'] },
-  { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], languageOptions: { globals: globals.node } },
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    plugins: { js },
+    extends: ['js/recommended'],
+  },
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globalsMirta,
+      },
+    },
+  },
   // TypeScript Defaults
   tseslint.configs.strictTypeChecked.map(config => ({
     ...config,
@@ -21,8 +34,8 @@ export default defineConfig([
   {
     files: ['**/*.ts'],
     rules: {
-      // Правило несовместимо с wb-rules 2.0
-      '@typescript-eslint/prefer-includes': 'off',
+      // Позволяет работать с dev['deviceId']['controlId']
+      '@typescript-eslint/dot-notation': 'off',
       // Разрешает интерполяцию базовых типов
       '@typescript-eslint/restrict-template-expressions': ['error', {
         allowAny: false,
@@ -31,6 +44,19 @@ export default defineConfig([
         allowNumber: true,
         allowRegExp: true,
       }],
+      // Разрешает неиспользуемые переменные с символом подчёркивания
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          'args': 'all',
+          'argsIgnorePattern': '^_',
+          'caughtErrors': 'all',
+          'caughtErrorsIgnorePattern': '^_',
+          'destructuredArrayIgnorePattern': '^_',
+          'varsIgnorePattern': '^_',
+          'ignoreRestSiblings': true,
+        },
+      ],
     },
     languageOptions: {
       parserOptions: {
