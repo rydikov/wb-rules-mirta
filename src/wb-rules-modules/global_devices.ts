@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const DefinedVersion = '0.1' // При редактировании этих переменных необходимо менять версию, чтобы переопределять глобальные пемеремные
+
 // const LightINChannelsNames: Record<string, string> = {
 //   Room1_0: 'wb-mr6cv3_217/Input 0',
 //   Room1_1: 'wb-mr6cv3_217/Input 1',
@@ -17,17 +20,23 @@ const LightOUTChannelsNames: Record<string, string> = {
   Сabinet_01: 'wb-mr6cv3_217/K6',
 }
 
-export class Light {
+class Device {
+  loaded_dev: WbRules.Control | undefined
   constructor(
     readonly name: string
   ) {
+
+    const idx = LightOUTChannelsNames[this.name]
+    this.loaded_dev = getControl(idx)
+
   }
+}
+
+export class Light extends Device {
 
   turn(action: boolean) {
 
-    const idx = LightOUTChannelsNames[this.name]
-    const loaded_dev = getControl(idx)
-    loaded_dev?.setValue(action)
+    this.loaded_dev?.setValue(action)
 
   }
 
