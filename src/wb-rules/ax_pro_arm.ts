@@ -1,4 +1,4 @@
-import { LIGHTS } from '@wbm/global_devices'
+import { Light } from '@wbm/global_devices'
 
 defineRule('ArmGroundFloor', {
   whenChanged: 'AxPro/state_01',
@@ -7,7 +7,7 @@ defineRule('ArmGroundFloor', {
     if (newValue == 1) {
 
       log.info('Подвал поставлен на охрану')
-      LIGHTS.OUT.Off('Сabinet_01', false)
+      new Light('Сabinet_01').off()
 
     }
 
