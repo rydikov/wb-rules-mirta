@@ -21,6 +21,11 @@ const cells: WbRules.ControlOptionsTree = {
     type: 'text',
     value: '',
   },
+  last_seen_timestamp: {
+    title: 'Последний раз в сети (timestamp)',
+    type: 'value',
+    value: 0,
+  },
 }
 
 const devices = [
@@ -36,6 +41,7 @@ const devices = [
   { id: 'ax-pro-11', title: 'Уличная сирена' },
 ]
 
+// Генерация виртуальных устройств для датчиков Ax-Pro
 // eslint-disable-next-line @typescript-eslint/prefer-for-of
 for (let i = 0; i < devices.length; i++) {
 
@@ -59,6 +65,7 @@ for (let i = 0; i < devices.length; i++) {
 
 };
 
+// Переводим timestamp в формат DD.MM.YYYY HH:MM:SS
 function formatTimestampES5(last_seen) {
 
   const date = new Date(last_seen * 1000)
@@ -70,7 +77,7 @@ function formatTimestampES5(last_seen) {
   const minutes = date.getMinutes()
   const seconds = date.getSeconds()
 
-  // Дополняем нулями при необходимости
+  // Дополняем нулями для красоты
   function pad(n: number) {
 
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -105,19 +112,53 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
 
   if (device !== undefined) {
 
-    dev[`${devName}/temperature`] = value.temperature
-    dev[`${devName}/charge_value`] = 'chargeValue' in value ? value.chargeValue : 0
-
-    dev[`${devName}/status`] = value.status
-
-    dev[`${devName}/last_seen`] = formatTimestampES5(value.last_seen)
+    device.getControl('temperature').setValue(value.temperature)
+    device.getControl('charge_value').setValue('chargeValue' in value ? value.chargeValue : 0)
+    device.getControl('status').setValue(value.status)
+    device.getControl('last_seen_timestamp').setValue(value.last_seen)
+    device.getControl('last_seen').setValue(formatTimestampES5(value.last_seen))
 
     if (device.isControlExists('humidity')) {
 
-      dev[`${devName}/humidity`] = 'humidity' in value ? value.humidity : 0
+      device.getControl('humidity').setValue('humidity' in value ? value.humidity : 0)
 
     };
 
   }
 
+})
+
+// Проверяем что данные корректно приходят от Ax-Pro, если нет, то принудительно ставим все контролы в ошибку
+defineRule('CHECK_AXPRO_SENSORS', {
+  when: cron('@hourly'),
+  then: function () {
+
+    devices.forEach((d) => {
+
+      const device = getDevice(d.id)
+
+      if (device !== undefined) {
+
+        const tsMs = Date.now()
+
+        const last_seen_timestamp_ctrl = device.getControl('last_seen_timestamp')
+        const last_seen_timestamp = +(last_seen_timestamp_ctrl.getValue())
+
+        log.debug(last_seen_timestamp)
+        log.debug(tsMs)
+
+        const err_msg = tsMs - last_seen_timestamp > 3600 ? 'r' : ''
+
+        // device.setError('r')
+        device.controlsList().forEach(function (ctrl) {
+
+          ctrl.setError(err_msg)
+
+        })
+
+      }
+
+    })
+
+  },
 })

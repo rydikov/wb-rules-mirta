@@ -2,7 +2,7 @@
   "name": "wb-rules-mirta",
   "version": "0.0.0",
   "scripts": {
-    "wb:deploy": "rsync -e 'ssh -p 22' -rltzvgO --progress --delete --exclude='alarms.conf' --groupmap='*:developers' dist/es5/* 'root@10.200.200.1:/mnt/data/etc/'",
+    "wb:deploy": "scp -r dist wb:/mnt/data/supervisor",
     "build": "cross-env NODE_ENV=production rollup -c",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
     "test": "vitest run"
