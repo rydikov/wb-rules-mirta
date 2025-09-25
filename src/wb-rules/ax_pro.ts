@@ -1,16 +1,19 @@
-import { AxProAreas } from '@wbm/global_devices'
+// Синхронизация статуса охранной системы с виртуальным устройством ВБ
+// AxPro пишет своё состояние в корневой топпик ax-pr
+// При изменении топика, значения из него присваиваются значениям виртуального устройства AxPro
+import { AxProAreas, axProStatesEnum } from '@wbm/global_devices'
 
 const axProStates = {
-  1: { en: 'Armed', ru: 'Под охраной' },
-  2: { en: 'Stay armed', ru: 'Ночной режим' },
-  3: { en: 'Disarmed', ru: 'Снято с охраны' },
+  [axProStatesEnum.Armed]: { en: 'Armed', ru: 'Под охраной' },
+  [axProStatesEnum.StayArmed]: { en: 'Stay armed', ru: 'Ночной режим' },
+  [axProStatesEnum.Disarmed]: { en: 'Disarmed', ru: 'Снято с охраны' },
   4: { en: 'Status unknown', ru: 'Состояние неизвестно' },
 }
 
 const ciaToState: Record<string, number> = {
-  '3401': 1,
-  '3441': 2,
-  '1401': 3,
+  '3401': axProStatesEnum.Armed,
+  '3441': axProStatesEnum.StayArmed,
+  '1401': axProStatesEnum.Disarmed,
 }
 
 const patritionsWithDevaces: Record<string, string> = {

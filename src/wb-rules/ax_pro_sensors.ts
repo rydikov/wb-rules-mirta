@@ -1,9 +1,26 @@
+// Синхронизация температуры датчиков охранной системы с виртуальными устройством ВБ
+// AxPro пишет своё состояние в корневой топпик ax-pro-xx где xx это номер датчика
+// При изменении топика, значения из него присваиваются значению виртуального устройства AxPro
+const devices = [
+  { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
+  { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
+  { id: 'ax-pro-3', title: 'ДД Бар' },
+  { id: 'ax-pro-4', title: 'ДД Склад' },
+  { id: 'ax-pro-6', title: 'ДО Спортазл' },
+  { id: 'ax-pro-8', title: 'ДД Спортзал' },
+  { id: 'ax-pro-10', title: 'ДО Бар' },
+  { id: 'ax-pro-12', title: 'Датчик дыма отключен' },
+  { id: 'ax-pro-13', title: 'Датчик дыма отключен' },
+  { id: 'ax-pro-11', title: 'Уличная сирена' },
+]
+
 const cells: WbRules.ControlOptionsTree = {
   temperature: {
     title: 'Температура',
     type: 'value',
     units: 'deg C',
     value: 0,
+    order: 0,
   },
   charge_value: {
     title: 'Процент заряда',
@@ -22,24 +39,12 @@ const cells: WbRules.ControlOptionsTree = {
     value: '',
   },
   last_seen_timestamp: {
-    title: 'Последний раз в сети (timestamp)',
+    title: 'Последний раз в сети',
     type: 'value',
     value: 0,
+    precision: 1,
   },
 }
-
-const devices = [
-  { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
-  { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
-  { id: 'ax-pro-3', title: 'ДД Бар' },
-  { id: 'ax-pro-4', title: 'ДД Склад' },
-  { id: 'ax-pro-6', title: 'ДО Спортазл' },
-  { id: 'ax-pro-8', title: 'ДД Спортзал' },
-  { id: 'ax-pro-10', title: 'ДО Бар' },
-  { id: 'ax-pro-12', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-13', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-11', title: 'Уличная сирена' },
-]
 
 // Генерация виртуальных устройств для датчиков Ax-Pro
 // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -114,7 +119,7 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
   }
 })
 
-// Проверяем что данные корректно приходят от Ax-Pro, если нет, то принудительно ставим все контролы в ошибку
+// Проверяем что данные корректно приходят от Ax-Pro, если нет или датчик offline, то принудительно ставим все контролы в ошибку
 defineRule('CHECK_AXPRO_SENSORS', {
   when: cron('@hourly'),
   then: function () {
@@ -122,7 +127,7 @@ defineRule('CHECK_AXPRO_SENSORS', {
       const device = getDevice(d.id)
 
       if (device !== undefined) {
-        const tsMs = Date.now()
+        const tsNow = Date.now() * 1000
 
         const last_seen_timestamp_ctrl = device.getControl('last_seen_timestamp')
         const last_seen_timestamp = last_seen_timestamp_ctrl.getValue()
@@ -131,12 +136,16 @@ defineRule('CHECK_AXPRO_SENSORS', {
           throw new Error(`${last_seen_timestamp} не является числом`)
         }
 
-        log.debug(last_seen_timestamp)
-        log.debug(tsMs)
+        // 3600 = 1 hour
+        let err_msg = last_seen_timestamp - tsNow > 3600 ? 'p' : ''
 
-        const err_msg = last_seen_timestamp - tsMs * 1000 > 3600 ? 'r' : ''
+        const status_ctrl = device.getControl('status')
+        const status = status_ctrl.getValue()
+        if (status === 'offline') {
+          err_msg = 'r'
+        }
 
-        // device.setError('r')
+        // device.setError('p')
         device.controlsList().forEach(function (ctrl) {
           ctrl.setError(err_msg)
         })

@@ -23,6 +23,12 @@ export const RelayLights: Record<string, string> = {
   Сabinet_01: 'wb-mr6cv3_217/K6',
 }
 
+export enum axProStatesEnum {
+  Armed = 1,
+  StayArmed = 2,
+  Disarmed = 3
+}
+
 export const AxProAreas: Record<string, string> = {
   GroundFloor: 'AxPro/state_01',
   Bar: 'AxPro/state_02',
