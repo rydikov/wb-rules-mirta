@@ -1,3 +1,5 @@
+import { AxProAreas } from '@wbm/global_devices'
+
 const axProStates = {
   1: { en: 'Armed', ru: 'Под охраной' },
   2: { en: 'Stay armed', ru: 'Ночной режим' },
@@ -12,9 +14,9 @@ const ciaToState: Record<string, number> = {
 }
 
 const patritionsWithDevaces: Record<string, string> = {
-  '01': 'AxPro/state_01',
-  '02': 'AxPro/state_02',
-  '03': 'AxPro/state_03',
+  '01': AxProAreas['GroundFloor'],
+  '02': AxProAreas['Bar'],
+  '03': AxProAreas['Outdoor'],
 }
 
 defineVirtualDevice('AxPro', {
@@ -49,7 +51,6 @@ interface PartitionMessage {
 
 // Sync with virtual device
 trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => {
-
   log.debug('name: {}, value: {}'.format(message.topic, message.value))
 
   const value = JSON.parse(message.value) as PartitionMessage
@@ -60,9 +61,6 @@ trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => 
   const control = getControl(partition)
 
   if (state && control) {
-
     control.setValue(state)
-
   }
-
 })

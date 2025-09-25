@@ -85,7 +85,9 @@ export default defineConfig([
       '@stylistic/curly-newline': ['error', 'always'],
       '@stylistic/nonblock-statement-body-position': ['error', 'below'],
       '@stylistic/padded-blocks': ['error', {
-        'blocks': 'always',
+        'blocks': 'never',
+        'classes': 'always',
+        'switches': 'always',
       }],
     },
   },

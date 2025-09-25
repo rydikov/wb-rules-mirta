@@ -44,14 +44,12 @@ const devices = [
 // Генерация виртуальных устройств для датчиков Ax-Pro
 // eslint-disable-next-line @typescript-eslint/prefer-for-of
 for (let i = 0; i < devices.length; i++) {
-
   const d = devices[i]
   const v_dev = defineVirtualDevice(d.id, {
     title: d.title,
     cells: cells,
   })
   if (d.humidity !== undefined) {
-
     v_dev.addControl('humidity', {
       title: 'Влажность',
       type: 'value',
@@ -60,14 +58,11 @@ for (let i = 0; i < devices.length; i++) {
       max: 100,
       min: 1,
     })
-
   }
-
 };
 
 // Переводим timestamp в формат DD.MM.YYYY HH:MM:SS
 function formatTimestampES5(last_seen) {
-
   const date = new Date(last_seen * 1000)
 
   const day = date.getDate()
@@ -79,15 +74,12 @@ function formatTimestampES5(last_seen) {
 
   // Дополняем нулями для красоты
   function pad(n: number) {
-
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return n < 10 ? '0' + n : n
-
   }
 
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   return pad(day) + '.' + pad(month) + '.' + year + ' ' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
-
 };
 
 interface SensorMessage {
@@ -100,7 +92,6 @@ interface SensorMessage {
 
 // Sync with virtual device
 trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
-
   const value = JSON.parse(message.value) as SensorMessage
   log.debug(message.topic)
 
@@ -111,7 +102,6 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
   const device = getDevice(devName)
 
   if (device !== undefined) {
-
     device.getControl('temperature').setValue(value.temperature)
     device.getControl('charge_value').setValue('chargeValue' in value ? value.chargeValue : 0)
     device.getControl('status').setValue(value.status)
@@ -119,46 +109,38 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
     device.getControl('last_seen').setValue(formatTimestampES5(value.last_seen))
 
     if (device.isControlExists('humidity')) {
-
       device.getControl('humidity').setValue('humidity' in value ? value.humidity : 0)
-
     };
-
   }
-
 })
 
 // Проверяем что данные корректно приходят от Ax-Pro, если нет, то принудительно ставим все контролы в ошибку
 defineRule('CHECK_AXPRO_SENSORS', {
   when: cron('@hourly'),
   then: function () {
-
     devices.forEach((d) => {
-
       const device = getDevice(d.id)
 
       if (device !== undefined) {
-
         const tsMs = Date.now()
 
         const last_seen_timestamp_ctrl = device.getControl('last_seen_timestamp')
-        const last_seen_timestamp = +(last_seen_timestamp_ctrl.getValue())
+        const last_seen_timestamp = last_seen_timestamp_ctrl.getValue()
+
+        if (typeof (last_seen_timestamp) !== 'number') {
+          throw new Error(`${last_seen_timestamp} не является числом`)
+        }
 
         log.debug(last_seen_timestamp)
         log.debug(tsMs)
 
-        const err_msg = tsMs - last_seen_timestamp > 3600 ? 'r' : ''
+        const err_msg = last_seen_timestamp - tsMs * 1000 > 3600 ? 'r' : ''
 
         // device.setError('r')
         device.controlsList().forEach(function (ctrl) {
-
           ctrl.setError(err_msg)
-
         })
-
       }
-
     })
-
   },
 })
