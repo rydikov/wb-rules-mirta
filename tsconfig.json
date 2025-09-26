@@ -1,6 +1,7 @@
 {
   "extends": "@mirta/tsconfig",
   "compilerOptions": {
+    "rootDir": ".",
     "paths": {
       "@wbm/*": [
         "./src/wb-rules-modules/*"
@@ -11,6 +12,9 @@
       "node",
       "vitest/globals"
     ]
+  },
+  "imports": {
+  "#wbm/*": "./src/wb-rules-modules/*.js"
   },
   "include": [
     "*.ts",

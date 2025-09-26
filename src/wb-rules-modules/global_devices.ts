@@ -1,17 +1,15 @@
-export const DefinedVersion = '0.1' // При редактировании этих переменных необходимо менять версию, чтобы переопределять глобальные пемеремные
-
-// const LightINChannelsNames: Record<string, string> = {
-//   Room1_0: 'wb-mr6cv3_217/Input 0',
-//   Room1_1: 'wb-mr6cv3_217/Input 1',
-//   Room1_2: 'wb-mr6cv3_217/Input 2',
-//   Room1_3: 'wb-mr6cv3_217/Input 3',
-//   Room1_4: 'wb-mr6cv3_217/Input 4',
-//   Room1_5: 'wb-mr6cv3_217/Input 5',
-//   Сabinet_01: 'wb-mr6cv3_217/Input 6',
-// }
-
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
+}
+
+export const WallSwitches: Record<string, string> = {
+  Room1_1: 'wb-mcm8_138/Input 1',
+  Room1_2: 'wb-mcm8_138/Input 2',
+  Room1_3: 'wb-mcm8_138/Input 3',
+  Room1_4: 'wb-mcm8_138/Input 4',
+  Room1_5: 'wb-mcm8_138/Input 5',
+  Room1_6: 'wb-mcm8_138/Input 6',
+  Room1_7: 'wb-mcm8_138/Input 7',
 }
 
 export const RelayLights: Record<string, string> = {

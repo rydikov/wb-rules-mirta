@@ -87,7 +87,7 @@ function sunCoords(d) {
   }
 }
 
-var SunCalc = {}
+export const SunCalc = {}
 
 // calculates sun position for a given date and latitude/longitude
 
@@ -325,6 +325,3 @@ SunCalc.getMoonTimes = function (date, lat, lng, inUTC) {
 
   return result
 }
-
-exports.SunCalc = SunCalc
-// export as Node module / AMD module / browser variable

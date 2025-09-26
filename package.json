@@ -16,6 +16,11 @@
     "@mirta/store": "0.2.6",
     "mirta": "0.2.6"
   },
+  "imports": {
+  "#wbm/*": [
+    "./src/wb-rules-modules/*.js"
+  ]
+  },
   "devDependencies": {
     "@eslint/js": "^9.34.0",
     "@mirta/globals": "0.2.6",

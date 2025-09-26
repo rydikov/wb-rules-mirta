@@ -1,3 +1,5 @@
+import { RelayLight } from '@wbm/wb_classes'
+
 export function useMasterControl(options: {
   ruleName: string
   control: string
@@ -12,9 +14,7 @@ export function useMasterControl(options: {
         return
 
       loads.forEach((load) => {
-        // const loaded_dev = getControl(load)
-        // loaded_dev?.setValue(false)
-        dev[load] = false
+        new RelayLight(load).off()
       })
 
       log.debug('Весь свет выключен')
