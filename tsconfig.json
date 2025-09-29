@@ -13,9 +13,6 @@
       "vitest/globals"
     ]
   },
-  "imports": {
-  "#wbm/*": "./src/wb-rules-modules/*.js"
-  },
   "include": [
     "*.ts",
     "src/**/*.js",

@@ -13,8 +13,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@mirta/store": "0.2.6",
-    "mirta": "0.2.6"
+    "@mirta/store": "0.2.8",
+    "mirta": "0.2.8"
   },
   "imports": {
   "#wbm/*": [
@@ -23,10 +23,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.34.0",
-    "@mirta/globals": "0.2.6",
-    "@mirta/rollup": "0.2.6",
-    "@mirta/testing": "0.2.6",
-    "@mirta/tsconfig": "0.2.6",
+    "@mirta/globals": "0.2.8",
+    "@mirta/rollup": "0.2.8",
+    "@mirta/testing": "0.2.8",
+    "@mirta/tsconfig": "0.2.8",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@types/node": "^24.3.0",
     "@vitest/eslint-plugin": "^1.3.9",
