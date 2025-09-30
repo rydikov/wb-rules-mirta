@@ -43,28 +43,30 @@ defineRule('OUT_LIGHTS_SWITCH', {
     const sunrise = times.sunrise
     const sunset = times.sunset
 
-    const off_date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59)
+    const is_day = (now >= sunrise && now < sunset)
 
-    let is_day = false
+    // const off_date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59)
 
-    if ((now > sunset) && (now < off_date)) {
-      // Sunset
-      is_day = false
-    }
-    else {
-      if ((now > sunrise) && (now < sunset)) {
-        // Sunrise
-        is_day = true
-      }
+    // let is_day = false
 
-      const device = getDevice('AstroTimer')
+    // if ((now > sunset) && (now < off_date)) {
+    //   // Sunset
+    //   is_day = false
+    // }
+    // else {
+    //   if ((now > sunrise) && (now < sunset)) {
+    //     // Sunrise
+    //     is_day = true
+    //   }
+    // }
 
-      if (device !== undefined) {
-        device.getControl('now').setValue(formatTimestampES5(now.getTime()))
-        device.getControl('sunrise').setValue(formatTimestampES5(sunrise.getTime()))
-        device.getControl('sunset').setValue(formatTimestampES5(sunset.getTime()))
-        device.getControl('is_day').setValue(is_day)
-      }
+    const device = getDevice('AstroTimer')
+
+    if (device !== undefined) {
+      device.getControl('now').setValue(formatTimestampES5(now.getTime()))
+      device.getControl('sunrise').setValue(formatTimestampES5(sunrise.getTime()))
+      device.getControl('sunset').setValue(formatTimestampES5(sunset.getTime()))
+      device.getControl('is_day').setValue(is_day)
     }
   },
 })
