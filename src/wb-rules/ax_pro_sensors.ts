@@ -1,6 +1,8 @@
 // Синхронизация температуры датчиков охранной системы с виртуальными устройством ВБ
 // AxPro пишет своё состояние в корневой топпик ax-pro-xx где xx это номер датчика
 // При изменении топика, значения из него присваиваются значению виртуального устройства AxPro
+import { formatTimestampES5 } from '#wbm/helpers'
+
 const devices = [
   { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
   { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
@@ -66,32 +68,11 @@ for (let i = 0; i < devices.length; i++) {
   }
 };
 
-// Переводим timestamp в формат DD.MM.YYYY HH:MM:SS
-function formatTimestampES5(last_seen) {
-  const date = new Date(last_seen * 1000)
-
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  const seconds = date.getSeconds()
-
-  // Дополняем нулями для красоты
-  function pad(n: number) {
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    return n < 10 ? '0' + n : n
-  }
-
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  return pad(day) + '.' + pad(month) + '.' + year + ' ' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
-};
-
 interface SensorMessage {
   temperature: string
   chargeValue: string
   status: string
-  last_seen: string
+  last_seen: number
   humidity: string
 }
 
@@ -111,7 +92,7 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
     device.getControl('charge_value').setValue('chargeValue' in value ? value.chargeValue : 0)
     device.getControl('status').setValue(value.status)
     device.getControl('last_seen_timestamp').setValue(value.last_seen)
-    device.getControl('last_seen').setValue(formatTimestampES5(value.last_seen))
+    device.getControl('last_seen').setValue(formatTimestampES5(value.last_seen * 1000)) // s to ms
 
     if (device.isControlExists('humidity')) {
       device.getControl('humidity').setValue('humidity' in value ? value.humidity : 0)
