@@ -2,6 +2,7 @@
 // AxPro пишет своё состояние в корневой топпик ax-pro-xx где xx это номер датчика
 // При изменении топика, значения из него присваиваются значению виртуального устройства AxPro
 import { formatTimestampES5 } from '#wbm/helpers'
+import { sendTgMessage } from '#wbm/telegram'
 
 const devices = [
   { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
@@ -118,7 +119,7 @@ defineRule('CHECK_AXPRO_SENSORS', {
         }
 
         // 3600 = 1 hour
-        let err_msg = last_seen_timestamp - tsNow > 3600 ? 'p' : ''
+        let err_msg = tsNow - last_seen_timestamp > 3600 ? 'p' : ''
 
         const status_ctrl = device.getControl('status')
         const status = status_ctrl.getValue()
@@ -126,10 +127,13 @@ defineRule('CHECK_AXPRO_SENSORS', {
           err_msg = 'r'
         }
 
-        // device.setError('p')
+        device.setError(err_msg)
         device.controlsList().forEach(function (ctrl) {
           ctrl.setError(err_msg)
         })
+        if (err_msg === 'p') {
+          sendTgMessage(`Датчик температуры ${d.id} Ax-Pro не передает состояние`)
+        }
       }
     })
   },
