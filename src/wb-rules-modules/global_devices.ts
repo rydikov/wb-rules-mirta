@@ -21,6 +21,10 @@ export const RelayLights: Record<string, string> = {
   Сabinet_01: 'wb-mr6cv3_217/K6',
 }
 
+export const AqaraSensors: Record<string, string> = {
+  Сabinet_01: 'AqaraTS01',
+}
+
 export enum axProStatesEnum {
   Armed = 1,
   StayArmed = 2,

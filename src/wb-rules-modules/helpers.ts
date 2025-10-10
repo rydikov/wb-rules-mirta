@@ -18,3 +18,20 @@ export function formatTimestampES5(last_seen: number) {
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   return pad(day) + '.' + pad(month) + '.' + year + ' ' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
 };
+
+// Object.values(obj) for ES5
+export function objectValues<T extends Record<string, unknown>>(obj: T): T[keyof T][] {
+  const arr: T[keyof T][] = []
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      arr.push(obj[key])
+    }
+  }
+  return arr
+}
+
+export function checkAvailability(last_seen: number): boolean {
+  const tsNow = Date.now() / 1000 // convert to sec
+  const is_availability = tsNow - last_seen > 3600 // 3600 = 1 hour
+  return is_availability
+}
