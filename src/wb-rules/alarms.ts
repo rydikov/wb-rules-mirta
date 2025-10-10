@@ -19,11 +19,10 @@ const alarms = {
   // TODO: build dynamically
     {
       'name': 'AqaraTS01IsOffline',
-      'cell': 'AqaraTS01/last_seen#error',
-      'expectedValue': '',
-      'alarmMessage': 'AqaraTS01 is offline',
-      'noAlarmMessage': 'AqaraTS01 is back on',
-      'maxCount': 5,
+      'cell': 'AqaraTS01/linkquality',
+      'minValue': 10,
+      // 'alarmMessage': 'AqaraTS01 is offline',
+      // 'noAlarmMessage': 'AqaraTS01 is back on',
     },
 
   ],
