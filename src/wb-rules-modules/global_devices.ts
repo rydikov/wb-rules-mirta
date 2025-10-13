@@ -1,6 +1,7 @@
 import { RelayLight } from '@wbm/wb_classes'
 import { AqaraSensor } from '@wbm/aqara_classes'
 import { MTDX62MB } from '@wbm/mtdx62-mb_classes'
+import { AstroTimerCls } from '@wbm/other_classes'
 
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
@@ -44,3 +45,5 @@ export const AxProAreas: Record<string, string> = {
   Bar: 'AxPro/state_02',
   Outdoor: 'AxPro/state_03',
 }
+
+export const AstroTimer = new AstroTimerCls('AstroTimer')
