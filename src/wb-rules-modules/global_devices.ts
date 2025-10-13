@@ -1,4 +1,5 @@
 import { RelayLight } from '@wbm/wb_classes'
+import { AqaraSensor } from '@wbm/aqara_classes'
 
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
@@ -23,8 +24,8 @@ export const RelayLights: Record<string, RelayLight> = {
   Сabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
 }
 
-export const AqaraSensors: Record<string, string> = {
-  Сabinet_01: 'AqaraTS01',
+export const AqaraSensors: Record<string, AqaraSensor> = {
+  Сabinet_01: new AqaraSensor('AqaraTS01'),
 }
 
 export const PresenceSensors: Record<string, string> = {

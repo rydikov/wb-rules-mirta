@@ -5,18 +5,9 @@ import { objectValues, checkAvailability } from '#wbm/helpers'
 defineRule('CHECK_AQARA_SENSORS', {
   when: cron('@hourly'),
   then: function () {
-    objectValues(AqaraSensors).forEach((d) => {
-      const device = getDevice(d)
-
-      if (device !== undefined) {
-        const last_seen_timestamp = Number(device.getControl('last_seen').getValue())
-
-        const err_msg = checkAvailability(last_seen_timestamp / 1000) ? 'r' : ''
-
-        device.controlsList().forEach(function (ctrl) {
-          ctrl.setError(err_msg)
-        })
-      }
+    objectValues(AqaraSensors).forEach((aqara_sernsor) => {
+      const err_msg = checkAvailability(aqara_sernsor.last_seen / 1000) ? 'r' : ''
+      aqara_sernsor.setError(err_msg)
     })
   },
 })
