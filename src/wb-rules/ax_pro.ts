@@ -12,6 +12,7 @@ const axProStates = {
 
 const ciaToState: Record<string, number> = {
   '3401': axProStatesEnum.Armed,
+  '3403': axProStatesEnum.Armed, // Auto Armed
   '3441': axProStatesEnum.StayArmed,
   '1401': axProStatesEnum.Disarmed,
 }
@@ -22,6 +23,7 @@ const patritionsWithDevaces: Record<string, string> = {
   '03': AxProAreas['Outdoor'],
 }
 
+// TDOD: Generate from AxProAreas variable
 defineVirtualDevice('AxPro', {
   title: { en: 'Ax Pro', ru: 'Ax Pro' },
   cells: {

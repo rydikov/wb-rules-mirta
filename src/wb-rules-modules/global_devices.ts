@@ -1,3 +1,5 @@
+import { RelayLight } from '@wbm/wb_classes'
+
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
 }
@@ -12,17 +14,21 @@ export const WallSwitches: Record<string, string> = {
   Room1_7: 'wb-mcm8_138/Input 7',
 }
 
-export const RelayLights: Record<string, string> = {
-  Room1_1: 'wb-mr6cv3_217/K1',
-  Room1_2: 'wb-mr6cv3_217/K2',
-  Room1_3: 'wb-mr6cv3_217/K3',
-  Room1_4: 'wb-mr6cv3_217/K4',
-  Room1_5: 'wb-mr6cv3_217/K5',
-  Сabinet_01: 'wb-mr6cv3_217/K6',
+export const RelayLights: Record<string, RelayLight> = {
+  Room1_1: new RelayLight('wb-mr6cv3_217/K1'),
+  Room1_2: new RelayLight('wb-mr6cv3_217/K2'),
+  Room1_3: new RelayLight('wb-mr6cv3_217/K3'),
+  Room1_4: new RelayLight('wb-mr6cv3_217/K4'),
+  Room1_5: new RelayLight('wb-mr6cv3_217/K5'),
+  Сabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
 }
 
 export const AqaraSensors: Record<string, string> = {
   Сabinet_01: 'AqaraTS01',
+}
+
+export const PresenceSensors: Record<string, string> = {
+  Сabinet_01: 'mtdx62-mb_7',
 }
 
 export enum axProStatesEnum {
