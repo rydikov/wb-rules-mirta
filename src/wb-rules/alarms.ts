@@ -3,7 +3,7 @@ const tgConf = readConfig('/mnt/data/supervisor/wb-rules-conf/tg.conf') as {
   chatId: string
 }
 
-const alarms = {
+const alarms: WbRules.Alarms.Config = {
   'deviceName': 'Zigbee Alarms',
   'deviceTitle': 'Zigbee Alarms',
 
@@ -28,5 +28,4 @@ const alarms = {
   ],
 }
 
-log.debug(alarms)
-// Alarms.load(alarms)
+Alarms.load(alarms)
