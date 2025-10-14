@@ -1,25 +1,7 @@
-class BaseDevice {
-
-  control: WbRules.Control | undefined
-
-  constructor(
-    name: string
-  ) {
-    this.control = getControl(name)
-  }
-
-  value() {
-    return this.control?.getValue()
-  }
-
-  set_value(value: string | number | boolean) {
-    this.control?.setValue(value)
-  }
-
-}
+import { ControlBasedClass } from '#wbm/classes/base'
 
 // Свет включающийся через реле
-export class RelayLight extends BaseDevice {
+export class RelayLight extends ControlBasedClass {
 
   on() {
     this.set_value(true)

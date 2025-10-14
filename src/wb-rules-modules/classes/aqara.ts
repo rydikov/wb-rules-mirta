@@ -1,15 +1,7 @@
+import { DeviceBasedClass } from '#wbm/classes/base'
+
 // Класс для датчика температуры и влажности Aqara
-export class AqaraSensor {
-
-  device: WbRules.Device | undefined
-  name: string
-
-  constructor(
-    name: string
-  ) {
-    this.device = getDevice(name)
-    this.name = name
-  }
+export class AqaraSensor extends DeviceBasedClass {
 
   get last_seen_topic(): string {
     return '{}/last_seen'.format(this.name)

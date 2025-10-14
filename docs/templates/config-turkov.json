@@ -1,0 +1,461 @@
+{
+	"device_type": "Turkov",
+	"title": "Turkov",
+	"group": "g-climate-control",
+	"device": {
+		"name": "Turkov",
+		"id": "Turkov",
+		"groups": [
+			{
+				"title": "Status",
+				"id": "status",
+				"order": 1
+			}
+		],
+		"channels": [
+			{
+				"address": "0x01",
+				"reg_type": "holding",
+				"name": "Power",
+				"type": "switch",
+				"readonly": false,
+				"group": "status"
+			},
+			{
+				"address": "0x02",
+				"reg_type": "holding",
+				"name": "Temperature Setpoint",
+                "type": "value",
+                "units": "°C",
+                "format": "u16",
+                "min": 0,
+                "max": 50,
+				"group": "status"
+			},
+			{
+				"address": "0x03",
+				"reg_type": "holding",
+				"name": "Fan speed",
+                "type": "value",
+                "enum": [ 0, 1, 2, 3, 4 ],
+                "enum_titles": [
+                  "Modbus",
+                  "Low-speed",
+                  "Mid-speed",
+                  "High-speed",
+                  "Auto mode",
+                ],
+				"group": "status"
+			},
+			{
+				"address": "0x04",
+				"reg_type": "holding",
+				"name": "Mode",
+                "type": "value",
+                "enum": [ 0, 1, 2 ],
+                "enum_titles": [
+                  "Ventilation",
+                  "Heating",
+                  "Cooling",
+                ],
+				"group": "status"
+			},
+			{
+				"address": "0x05",
+				"reg_type": "holding",
+				"name": "Supply fan speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x06",
+				"reg_type": "holding",
+				"name": "Exhaust fan speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x07",
+				"reg_type": "holding",
+				"name": "Supply VAV channel",
+                "type": "value",
+                "units": "Pa",
+                "format": "u16",
+                "min": 0,
+                "max": 4000,
+				"group": "status"
+			},
+			{
+				"address": "0x08",
+				"reg_type": "holding",
+				"name": "Exhaust VAV channel",
+                "type": "value",
+                "units": "Pa",
+                "format": "u16",
+                "min": 0,
+                "max": 4000,
+				"group": "status"
+			},
+			{
+				"address": "0x0C",
+				"reg_type": "holding",
+				"name": "Fireplace",
+				"type": "switch",
+				"readonly": false,
+				"group": "status"
+			},
+			{
+				"address": "0x0D",
+				"reg_type": "holding",
+				"name": "Hydration",
+				"type": "switch",
+				"readonly": false,
+				"group": "status"
+			},
+			{
+				"address": "0x0E",
+				"reg_type": "holding",
+				"name": "Min hydration",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x0F",
+				"reg_type": "holding",
+				"name": "Max hydration",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x10",
+				"reg_type": "holding",
+				"name": "Power supply fan 1 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x11",
+				"reg_type": "holding",
+				"name": "Power supply fan 2 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x12",
+				"reg_type": "holding",
+				"name": "Power supply fan 3 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x13",
+				"reg_type": "holding",
+				"name": "Power exhaust fan 1 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x14",
+				"reg_type": "holding",
+				"name": "Power exhaust fan 2 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x15",
+				"reg_type": "holding",
+				"name": "Power exhaust fan 3 speed",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "min": 0,
+                "max": 100,
+				"group": "status"
+			},
+			{
+				"address": "0x101",
+				"reg_type": "input",
+                "name": "Outdoor temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x102",
+				"reg_type": "input",
+                "name": "Supply temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x103",
+				"reg_type": "input",
+                "name": "Water return temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x104",
+				"reg_type": "input",
+                "name": "Water heater temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x105",
+				"reg_type": "input",
+                "name": "Exhaust temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x10B",
+				"reg_type": "input",
+                "name": "D7 temperature",
+                "type": "value",
+                "units": "°C",
+                "format": "s16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x10C",
+				"reg_type": "input",
+                "name": "D7 humidity",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+                "scale": 0.1,
+				"group": "status"
+			},
+			{
+				"address": "0x106",
+				"reg_type": "input",
+                "name": "Filter contamination level",
+                "type": "value",
+                "units": "%",
+                "format": "u16",
+				"group": "status"
+			},
+			{
+				"address": "0x107",
+				"reg_type": "input",
+                "name": "Error code",
+                "type": "value",
+				"group": "status"
+			},
+			{
+				"address": "0x108",
+				"reg_type": "input",
+				"name": "Type",
+                "type": "value",
+                "enum": [ 0, 1, 2, 3, 4 ],
+                "enum_titles": [
+                  "Capsule",
+                  "I-Vent",
+                  "Block",
+                  "Zenit",
+                  "ecoTherm",
+                ],
+				"group": "status"
+			},
+			{
+				"address": "0x109",
+				"reg_type": "input",
+                "name": "Supply fan current",
+                "type": "value",
+                "units": "I",
+                "format": "s16",
+                "scale": 0.01,
+				"group": "status"
+			},
+			{
+				"address": "0x10A",
+				"reg_type": "input",
+                "name": "Exhaust fan current",
+                "type": "value",
+                "units": "I",
+                "format": "s16",
+                "scale": 0.01,
+				"group": "status"
+			},
+			{
+				"address": "0x111:0:1",
+				"reg_type": "input",
+                "name": "Recuperator drying",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x111:1:1",
+				"reg_type": "input",
+                "name": "Damper opening",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x111:2:1",
+				"reg_type": "input",
+                "name": "Humidifier drying",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x111:3:1",
+				"reg_type": "input",
+                "name": "Electric heater purging",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x111:4:1",
+				"reg_type": "input",
+                "name": "Cooler defrosting mode",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x111:5:1",
+				"reg_type": "input",
+                "name": "Humidifier in operation",
+                "type": "switch",
+				"group": "status"
+			},
+			{
+				"address": "0x112",
+				"reg_type": "input",
+                "name": "Power supply fan",
+                "type": "value",
+                "units": "%",
+				"group": "status"
+			},
+			{
+				"address": "0x113",
+				"reg_type": "input",
+                "name": "Power exhaust fan",
+                "type": "value",
+                "units": "%",
+				"group": "status"
+			},
+			{
+				"address": "0x114",
+				"reg_type": "input",
+                "name": "Supply fan pressure",
+                "type": "value",
+                "units": "Pa",
+				"group": "status"
+			},
+			{
+				"address": "0x115",
+				"reg_type": "input",
+                "name": "Exhaust fan pressure",
+                "type": "value",
+                "units": "Pa",
+				"group": "status"
+			},
+			{
+				"address": "0x116",
+				"reg_type": "input",
+                "name": "Position three-way valve",
+                "type": "value",
+                "units": "%",
+				"group": "status"
+			},
+		],
+        "translations": {
+            "ru": {
+                "Power": "Питание",
+                "Temperature Setpoint": "Уставка по температуре",
+                "Fan speed": "Скорость вентилятора",
+                "Mode": "Режим работы",
+                "Supply fan speed": "Скорость приточного вентилятора",
+                "Exhaust fan speed": "Скорость вытяжного вентилятора",
+                "Supply VAV channel": "Уставка VAV системы",
+                "Exhaust VAV channel": "Уставка давления в вытяжном канале",
+                "Outdoor temperature": "Температура уличного воздуха (D1)",
+                "Supply temperature": "Температура приточного воздуха (D2)",
+                "Water return temperature": "Температура обратной воды водяного нагревателя (D3)",
+                "Water heater temperature": "Температура поверхности водяного нагревателя (D4)",
+                "Exhaust temperature": "Температура вытяжного воздуха (D5)",
+                "Filter contamination level": "Уровень загрязненности фильтра",
+                "Error code": "Код ошибки",
+                "Type": "Тип установки",
+                "Supply fan current": "Ток приточного вентилятора ",
+                "Exhaust fan current": "Ток вытяжного вентилятора",
+                "D7 temperature": "Температура вытяжного воздуха (D7)",
+                "D7 humidity": "Влажность вытяжного воздуха (D7)",
+                "Power supply fan": "Текущая мощность приточного вентилятора",
+                "Power exhaust fan": "Текущая мощность вытяжного вентилятора",
+                "Supply fan pressure": "Текущее давление в приточном канале",
+                "Exhaust fan pressure": "Текущее давление в вытяжном канале",
+                "Fireplace": "Режим Камин",
+                "Hydration": "Режим Увлажнение",
+                "Min hydration": "Минимальная влажность в режиме увлажнения",
+                "Max hydration": "Максимальная влажность в режиме увлажнени",
+                "Power supply fan 1 speed": "Мощность приточного вентилятора на 1 скорости",
+                "Power supply fan 2 speed": "Мощность приточного вентилятора на 2 скорости",
+                "Power supply fan 3 speed": "Мощность приточного вентилятора на 3 скорости",
+                "Power exhaust fan 1 speed": "Мощность вытяжного вентилятора на 1 скорости",
+                "Power exhaust fan 2 speed": "Мощность вытяжного вентилятора на 2 скорости",
+                "Power exhaust fan 3 speed": "Мощность вытяжного вентилятора на 3 скорости",
+                "Position three-way valve": "Положение трехходового крана",
+                "Recuperator drying": "Просушка рекуператора",
+                "Damper opening": "Открытие заслонок",
+                "Humidifier drying": "Просушка увлажнителя",
+                "Electric heater purging": "Продувка электрического нагревателя",
+                "Cooler defrosting mode": "Режим оттайки охладителя",
+                "Humidifier in operation": "Увлажнитель в работе",
+            }
+        }
+	}
+}

@@ -1,15 +1,7 @@
+import { DeviceBasedClass } from '#wbm/classes/base'
+
 // Класс для датчика присутствия mtdx62-mb
-export class MTDX62MB {
-
-  device: WbRules.Device | undefined
-  name: string
-
-  constructor(
-    name: string
-  ) {
-    this.device = getDevice(name)
-    this.name = name
-  }
+export class MTDX62MB extends DeviceBasedClass {
 
   get presence_status_topic(): string {
     return '{}/presence_status'.format(this.name)

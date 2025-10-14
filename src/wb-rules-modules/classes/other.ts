@@ -1,15 +1,7 @@
+import { DeviceBasedClass } from '#wbm/classes/base'
+
 // Класс Астрономического таймера
-export class AstroTimerCls {
-
-  device: WbRules.Device | undefined
-  name: string
-
-  constructor(
-    name: string
-  ) {
-    this.device = getDevice(name)
-    this.name = name
-  }
+export class AstroTimerCls extends DeviceBasedClass {
 
   get is_day_topic(): string {
     return '{}/is_day'.format(this.name)
