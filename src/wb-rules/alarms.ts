@@ -9,6 +9,8 @@ const recipients: WbRules.Alarms.TelegramRecipient = {
   'chatId': tgConf.chatId,
 }
 
+// Список алармов Zigbee устройств.
+// Как только сигнал от устройства становится равным 0 - приходит оповещение
 const zigbeeAlarms: WbRules.Alarms.Config = {
   'deviceName': 'Zigbee Alarms',
   'deviceTitle': 'Zigbee Alarms',
@@ -30,6 +32,8 @@ const zigbeeAlarms: WbRules.Alarms.Config = {
 
 Alarms.load(zigbeeAlarms)
 
+// Список алармов сенсоров сигнализации Ax-Pro.
+// Как только статус устройства становится offline - приходит оповещение
 const axProAlarms: WbRules.Alarms.Config = {
   'deviceName': 'Ax Pro Alarms',
   'deviceTitle': 'Ax Pro Alarms',

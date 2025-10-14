@@ -14,15 +14,17 @@ export class DeviceBasedClass {
 }
 
 // Базовый класс для устройств с равнозначными контролами, реле на несколько выходов и т.д.
-// Для каждого контрола создается отдельный управляющий интервал
+// Для каждого контрола создается отдельный управляющий класс
 export class ControlBasedClass {
 
   control: WbRules.Control | undefined
+  name: string
 
   constructor(
     name: string
   ) {
     this.control = getControl(name)
+    this.name = name
   }
 
   value() {

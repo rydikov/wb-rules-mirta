@@ -1,4 +1,4 @@
-import { RelayLight } from '#wbm/classes/wb'
+import { RelayLight, DimmableLight } from '#wbm/classes/wb'
 import { AqaraSensor } from '#wbm/classes/aqara'
 import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
 import { AstroTimerCls } from '#wbm/classes/other'
@@ -26,6 +26,11 @@ export const RelayLights: Record<string, RelayLight> = {
   Room1_4: new RelayLight('wb-mr6cv3_217/K4'),
   Room1_5: new RelayLight('wb-mr6cv3_217/K5'),
   Сabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
+}
+
+// Диммируемый свет на MDM3, в настройках модуля должны быть установки для лампы
+export const DimmableLights: Record<string, DimmableLight> = {
+  Cabinet: new DimmableLight('wb-mdm3_77/K1'),
 }
 
 // Датчики температуры/влажности Aqara
