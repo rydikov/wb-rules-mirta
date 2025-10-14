@@ -7,6 +7,7 @@ export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
 }
 
+// Выключатели по группам в комнатах см. docs
 export const WallSwitches: Record<string, string> = {
   Room1_1: 'wb-mcm8_138/Input 1',
   Room1_2: 'wb-mcm8_138/Input 2',
@@ -17,6 +18,7 @@ export const WallSwitches: Record<string, string> = {
   Room1_7: 'wb-mcm8_138/Input 7',
 }
 
+// Обычный свет у которого есть on/off
 export const RelayLights: Record<string, RelayLight> = {
   Room1_1: new RelayLight('wb-mr6cv3_217/K1'),
   Room1_2: new RelayLight('wb-mr6cv3_217/K2'),
@@ -26,10 +28,12 @@ export const RelayLights: Record<string, RelayLight> = {
   Сabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
 }
 
+// Датчики температуры/влажности Aqara
 export const AqaraSensors: Record<string, AqaraSensor> = {
   Сabinet_01: new AqaraSensor('AqaraTS01'),
 }
 
+// Датчики присутствия
 export const PresenceSensors: Record<string, MTDX62MB> = {
   Сabinet_01: new MTDX62MB('mtdx62-mb_7'),
 }
@@ -46,4 +50,5 @@ export const AxProAreas: Record<string, string> = {
   Outdoor: 'AxPro/state_03',
 }
 
+// Астрономический таймер
 export const AstroTimer = new AstroTimerCls('AstroTimer')

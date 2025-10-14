@@ -4,11 +4,11 @@ import { ControlBasedClass } from '#wbm/classes/base'
 export class RelayLight extends ControlBasedClass {
 
   on() {
-    this.set_value(true)
+    this.setValue(true)
   }
 
   off() {
-    this.set_value(false)
+    this.setValue(false)
   }
 
 }

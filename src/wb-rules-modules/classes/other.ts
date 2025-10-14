@@ -7,7 +7,7 @@ export class AstroTimerCls extends DeviceBasedClass {
     return '{}/is_day'.format(this.name)
   }
 
-  get is_day(): boolean {
+  get isDay(): boolean {
     return Boolean(this.device?.getControl('is_day').getValue())
   }
 
@@ -17,6 +17,10 @@ export class AstroTimerCls extends DeviceBasedClass {
 
   get backlight(): boolean {
     return Boolean(this.device?.getControl('backlight').getValue())
+  }
+
+  doesNeedToTurnOnBacklight(): boolean {
+    return this.backlight && !this.isDay
   }
 
 }

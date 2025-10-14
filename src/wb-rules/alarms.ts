@@ -3,17 +3,17 @@ const tgConf = readConfig('/mnt/data/supervisor/wb-rules-conf/tg.conf') as {
   chatId: string
 }
 
-const alarms: WbRules.Alarms.Config = {
+const recipients: WbRules.Alarms.TelegramRecipient = {
+  'type': 'telegram',
+  'token': tgConf.token,
+  'chatId': tgConf.chatId,
+}
+
+const zigbeeAlarms: WbRules.Alarms.Config = {
   'deviceName': 'Zigbee Alarms',
   'deviceTitle': 'Zigbee Alarms',
 
-  'recipients': [
-    {
-      'type': 'telegram',
-      'token': tgConf.token,
-      'chatId': tgConf.chatId,
-    },
-  ],
+  'recipients': [recipients],
 
   'alarms': [
   // TODO: build dynamically
@@ -28,4 +28,38 @@ const alarms: WbRules.Alarms.Config = {
   ],
 }
 
-Alarms.load(alarms)
+Alarms.load(zigbeeAlarms)
+
+const axProAlarms: WbRules.Alarms.Config = {
+  'deviceName': 'Ax Pro Alarms',
+  'deviceTitle': 'Ax Pro Alarms',
+
+  'recipients': [recipients],
+
+  'alarms': [
+  // TODO: build dynamically
+    {
+      'name': 'ax-pro-1',
+      'cell': 'ax-pro-1/status',
+      'expectedValue': 'online',
+    },
+    {
+      'name': 'ax-pro-2',
+      'cell': 'ax-pro-2/status',
+      'expectedValue': 'online',
+    },
+    {
+      'name': 'ax-pro-3',
+      'cell': 'ax-pro-3/status',
+      'expectedValue': 'online',
+    },
+    {
+      'name': 'ax-pro-4',
+      'cell': 'ax-pro-4/status',
+      'expectedValue': 'online',
+    },
+
+  ],
+}
+
+Alarms.load(axProAlarms)

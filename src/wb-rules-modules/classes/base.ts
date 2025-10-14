@@ -29,7 +29,7 @@ export class ControlBasedClass {
     return this.control?.getValue()
   }
 
-  set_value(value: string | number | boolean) {
+  setValue(value: string | number | boolean) {
     this.control?.setValue(value)
   }
 

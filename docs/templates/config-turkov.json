@@ -43,7 +43,7 @@
                   "Low-speed",
                   "Mid-speed",
                   "High-speed",
-                  "Auto mode",
+                  "Auto mode"
                 ],
 				"group": "status"
 			},
@@ -56,7 +56,7 @@
                 "enum_titles": [
                   "Ventilation",
                   "Heating",
-                  "Cooling",
+                  "Cooling"
                 ],
 				"group": "status"
 			},
@@ -305,7 +305,7 @@
                   "I-Vent",
                   "Block",
                   "Zenit",
-                  "ecoTherm",
+                  "ecoTherm"
                 ],
 				"group": "status"
 			},
@@ -410,7 +410,7 @@
                 "type": "value",
                 "units": "%",
 				"group": "status"
-			},
+			}
 		],
         "translations": {
             "ru": {
@@ -454,7 +454,7 @@
                 "Humidifier drying": "Просушка увлажнителя",
                 "Electric heater purging": "Продувка электрического нагревателя",
                 "Cooler defrosting mode": "Режим оттайки охладителя",
-                "Humidifier in operation": "Увлажнитель в работе",
+                "Humidifier in operation": "Увлажнитель в работе"
             }
         }
 	}
