@@ -1,7 +1,7 @@
-import { RelayLight } from '@wbm/wb_classes'
-import { AqaraSensor } from '@wbm/aqara_classes'
-import { MTDX62MB } from '@wbm/mtdx62-mb_classes'
-import { AstroTimerCls } from '@wbm/other_classes'
+import { RelayLight } from '#wbm/classes/wb'
+import { AqaraSensor } from '#wbm/classes/aqara'
+import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
+import { AstroTimerCls } from '#wbm/classes/other'
 
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',

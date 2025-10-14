@@ -1,5 +1,5 @@
 // Проверяем что данные корректно приходят от Датчиков Aqara
-import { AqaraSensors } from '@wbm/global_devices'
+import { AqaraSensors } from '#wbm/global_devices'
 import { objectValues, checkAvailability } from '#wbm/helpers'
 
 defineRule('CHECK_AQARA_SENSORS', {

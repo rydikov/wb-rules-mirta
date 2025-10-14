@@ -1,4 +1,4 @@
-import { CPUs } from '@wbm/global_devices'
+import { CPUs } from '#wbm/global_devices'
 
 defineRule('CPU_TEMPERATURE_CONTROL', {
   whenChanged: CPUs['CPU'],

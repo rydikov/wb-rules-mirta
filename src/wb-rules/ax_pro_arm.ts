@@ -1,4 +1,4 @@
-import { AxProAreas, axProStatesEnum, RelayLights } from '@wbm/global_devices'
+import { AxProAreas, axProStatesEnum, RelayLights } from '#wbm/global_devices'
 
 defineRule('ArmGroundFloor', {
   whenChanged: AxProAreas['GroundFloor'],

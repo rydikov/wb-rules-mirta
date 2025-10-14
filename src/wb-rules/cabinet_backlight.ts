@@ -1,4 +1,4 @@
-import { PresenceSensors, AstroTimer } from '@wbm/global_devices'
+import { PresenceSensors, AstroTimer } from '#wbm/global_devices'
 
 defineRule('CABINET_BACKLIGHT', {
   whenChanged: [PresenceSensors.Сabinet_01.presence_status_topic],

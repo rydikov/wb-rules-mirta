@@ -1,5 +1,5 @@
-import { useMasterControl } from '@wbm/master-control'
-import { WallSwitches, RelayLights } from '@wbm/global_devices'
+import { useMasterControl } from '#wbm/master-control'
+import { WallSwitches, RelayLights } from '#wbm/global_devices'
 
 useMasterControl({
   ruleName: 'CABINET_MASTER_CONTROL',
