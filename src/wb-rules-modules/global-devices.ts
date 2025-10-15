@@ -40,7 +40,7 @@ export const AqaraSensors: Record<string, AqaraSensor> = {
 
 // Датчики присутствия
 export const PresenceSensors: Record<string, MTDX62MB> = {
-  Cabinet_01: new MTDX62MB('mtdx62-mb_7'),
+  Cabinet: new MTDX62MB('mtdx62-mb_7'),
 }
 
 export enum axProStatesEnum {
