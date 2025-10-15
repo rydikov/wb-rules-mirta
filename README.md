@@ -60,6 +60,11 @@ pnpm build
 pnpm wb:deploy
 ```
 
+После повышения версии фреймворка mirta нужно сделать:
+```
+pnpm install
+```
+
 ### Credits:
 
 * [Wb-Rules](https://github.com/wirenboard/wb-rules)
