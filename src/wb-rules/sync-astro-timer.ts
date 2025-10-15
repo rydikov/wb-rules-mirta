@@ -1,4 +1,4 @@
-// Астрологический таймер
+// Синхронизация виртуального устройства AstroTimer с suncalc
 
 import { SunCalc } from '#wbm/suncalc'
 import { formatTimestampES5 } from '#wbm/helpers'

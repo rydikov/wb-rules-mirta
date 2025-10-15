@@ -25,7 +25,7 @@ export const RelayLights: Record<string, RelayLight> = {
   Room1_3: new RelayLight('wb-mr6cv3_217/K3'),
   Room1_4: new RelayLight('wb-mr6cv3_217/K4'),
   Room1_5: new RelayLight('wb-mr6cv3_217/K5'),
-  Сabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
+  Cabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
 }
 
 // Диммируемый свет на MDM3, в настройках модуля должны быть установки для лампы
@@ -35,12 +35,12 @@ export const DimmableLights: Record<string, DimmableLight> = {
 
 // Датчики температуры/влажности Aqara
 export const AqaraSensors: Record<string, AqaraSensor> = {
-  Сabinet_01: new AqaraSensor('AqaraTS01'),
+  Cabinet_01: new AqaraSensor('AqaraTS01'),
 }
 
 // Датчики присутствия
 export const PresenceSensors: Record<string, MTDX62MB> = {
-  Сabinet_01: new MTDX62MB('mtdx62-mb_7'),
+  Cabinet_01: new MTDX62MB('mtdx62-mb_7'),
 }
 
 export enum axProStatesEnum {

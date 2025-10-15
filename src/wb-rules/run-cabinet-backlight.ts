@@ -1,7 +1,7 @@
-import { PresenceSensors, DimmableLights, AstroTimer } from '#wbm/global_devices'
+import { PresenceSensors, DimmableLights, AstroTimer } from '#wbm/global-devices'
 
 defineRule('CABINET_BACKLIGHT', {
-  whenChanged: [PresenceSensors.Сabinet_01.presence_status_topic],
+  whenChanged: [PresenceSensors.Cabinet_01.presence_status_topic],
   then: function (newValue) {
     if (newValue && AstroTimer.doesNeedToTurnOnBacklight() && !DimmableLights.Cabinet.isOn()) {
       DimmableLights.Cabinet.setBrightness(20)

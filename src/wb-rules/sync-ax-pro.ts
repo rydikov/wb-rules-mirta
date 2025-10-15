@@ -1,7 +1,7 @@
 // Синхронизация статуса охранной системы с виртуальным устройством ВБ
 // AxPro пишет своё состояние в корневой топпик ax-pr
 // При изменении топика, значения из него присваиваются значениям виртуального устройства AxPro
-import { AxProAreas, axProStatesEnum } from '#wbm/global_devices'
+import { AxProAreas, axProStatesEnum } from '#wbm/global-devices'
 
 const axProStates = {
   [axProStatesEnum.Armed]: { en: 'Armed', ru: 'Под охраной' },
