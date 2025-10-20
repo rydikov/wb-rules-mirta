@@ -1,20 +1,8 @@
 // Синхронизация температуры датчиков охранной системы с виртуальными устройством ВБ
 // AxPro пишет своё состояние в корневой топпик ax-pro-xx где xx это номер датчика
 // При изменении топика, значения из него присваиваются значению виртуального устройства AxPro
-import { formatTimestampES5, checkAvailability } from '#wbm/helpers'
-
-const devices = [
-  { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
-  { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
-  { id: 'ax-pro-3', title: 'ДД Бар' },
-  { id: 'ax-pro-4', title: 'ДД Склад' },
-  { id: 'ax-pro-6', title: 'ДО Спортазл' },
-  { id: 'ax-pro-8', title: 'ДД Спортзал' },
-  { id: 'ax-pro-10', title: 'ДО Бар' },
-  { id: 'ax-pro-12', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-13', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-11', title: 'Уличная сирена' },
-]
+import { AxProSensors } from '#wbm/global-devices'
+import { formatTimestampES5 } from '#wbm/helpers'
 
 const cells: WbRules.ControlOptionsTree = {
   temperature: {
@@ -40,6 +28,12 @@ const cells: WbRules.ControlOptionsTree = {
     type: 'text',
     value: '',
   },
+  is_updated: {
+    title: 'Данные актуальны',
+    type: 'switch',
+    readonly: true,
+    value: true,
+  },
   last_seen_timestamp: {
     title: 'Последний раз в сети',
     type: 'value',
@@ -50,8 +44,8 @@ const cells: WbRules.ControlOptionsTree = {
 
 // Генерация виртуальных устройств для датчиков Ax-Pro
 // eslint-disable-next-line @typescript-eslint/prefer-for-of
-for (let i = 0; i < devices.length; i++) {
-  const d = devices[i]
+for (let i = 0; i < AxProSensors.length; i++) {
+  const d = AxProSensors[i]
   const v_dev = defineVirtualDevice(d.id, {
     title: d.title,
     cells: cells,
@@ -97,28 +91,4 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
       device.getControl('humidity').setValue('humidity' in value ? value.humidity : 0)
     };
   }
-})
-
-// Проверяем что данные корректно приходят от Ax-Pro, если нет или датчик offline, то принудительно ставим все контролы в ошибку
-defineRule('CHECK_AXPRO_SENSORS', {
-  when: cron('@hourly'),
-  then: function () {
-    devices.forEach((d) => {
-      const device = getDevice(d.id)
-
-      if (device !== undefined) {
-        const last_seen_timestamp = Number(device.getControl('last_seen_timestamp').getValue())
-
-        let err_msg = checkAvailability(last_seen_timestamp) ? 'r' : ''
-
-        if (device.getControl('status').getValue() === 'offline') {
-          err_msg = 'r'
-        }
-
-        device.controlsList().forEach(function (ctrl) {
-          ctrl.setError(err_msg)
-        })
-      }
-    })
-  },
 })

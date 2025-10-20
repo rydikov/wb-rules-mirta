@@ -57,3 +57,17 @@ export const AxProAreas: Record<string, string> = {
 
 // Астрономический таймер
 export const AstroTimer = new AstroTimerCls('AstroTimer')
+
+// Датчики AxPro
+export const AxProSensors = [
+  { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
+  { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
+  { id: 'ax-pro-3', title: 'ДД Бар' },
+  { id: 'ax-pro-4', title: 'ДД Склад' },
+  { id: 'ax-pro-6', title: 'ДО Спортазл' },
+  { id: 'ax-pro-8', title: 'ДД Спортзал' },
+  { id: 'ax-pro-10', title: 'ДО Бар' },
+  { id: 'ax-pro-12', title: 'Датчик дыма отключен' },
+  { id: 'ax-pro-13', title: 'Датчик дыма отключен' },
+  { id: 'ax-pro-11', title: 'Уличная сирена' },
+]

@@ -44,23 +44,23 @@ const axProAlarms: WbRules.Alarms.Config = {
   // TODO: build dynamically
     {
       'name': 'ax-pro-1',
-      'cell': 'ax-pro-1/status',
-      'expectedValue': 'online',
+      'cell': 'ax-pro-1/is_updated',
+      'expectedValue': true,
     },
     {
       'name': 'ax-pro-2',
-      'cell': 'ax-pro-2/status',
-      'expectedValue': 'online',
+      'cell': 'ax-pro-2/is_updated',
+      'expectedValue': true,
     },
     {
       'name': 'ax-pro-3',
-      'cell': 'ax-pro-3/status',
-      'expectedValue': 'online',
+      'cell': 'ax-pro-3/is_updated',
+      'expectedValue': true,
     },
     {
       'name': 'ax-pro-4',
-      'cell': 'ax-pro-4/status',
-      'expectedValue': 'online',
+      'cell': 'ax-pro-4/is_updated',
+      'expectedValue': true,
     },
 
   ],
