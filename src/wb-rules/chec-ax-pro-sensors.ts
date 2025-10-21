@@ -11,16 +11,12 @@ defineRule('CHECK_AXPRO_SENSORS', {
       if (device !== undefined) {
         const last_seen_timestamp = Number(device.getControl('last_seen_timestamp').getValue())
 
-        let err_msg = checkAvailability(last_seen_timestamp) ? 'r' : ''
+        const device_is_available = checkAvailability(last_seen_timestamp)
 
-        if (err_msg === 'r') {
-          device.getControl('is_updated').setValue(false)
-        }
-        else {
-          device.getControl('is_updated').setValue(true)
-        }
+        device.getControl('is_updated').setValue(device_is_available)
 
-        if (device.getControl('status').getValue() === 'offline') {
+        let err_msg = ''
+        if (device.getControl('status').getValue() === 'offline' || !device_is_available) {
           err_msg = 'r'
         }
 
