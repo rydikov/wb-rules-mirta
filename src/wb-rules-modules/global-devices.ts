@@ -2,7 +2,7 @@ import { RelayLight, DimmableLight } from '#wbm/classes/wb'
 import { AqaraSensor } from '#wbm/classes/aqara'
 import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
 import { AstroTimerCls } from '#wbm/classes/other'
-import { AxProSensor } from '#wbm/classes/ax-pro'
+import { AxProSensor, AxProArea } from '#wbm/classes/ax-pro'
 
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
@@ -50,10 +50,10 @@ export enum axProStatesEnum {
   Disarmed = 3
 }
 
-export const AxProAreas: Record<string, string> = {
-  GroundFloor: 'AxPro/state_01',
-  Bar: 'AxPro/state_02',
-  Outdoor: 'AxPro/state_03',
+export const AxProAreas: Record<string, AxProArea> = {
+  GroundFloor: new AxProArea('AxPro/state_01', 'Подвал'),
+  Bar: new AxProArea('AxPro/state_02', 'Бар'),
+  Outdoor: new AxProArea('AxPro/state_03', 'Улица'),
 }
 
 // Астрономический таймер

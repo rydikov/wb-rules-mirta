@@ -1,4 +1,4 @@
-import { DeviceBasedClass } from '#wbm/classes/base'
+import { DeviceBasedClass, ControlBasedClass } from '#wbm/classes/base'
 
 // Класс для датчика температуры и влажности Aqara
 export class AxProSensor extends DeviceBasedClass {
@@ -53,6 +53,20 @@ export class AxProSensor extends DeviceBasedClass {
     this.device?.controlsList().forEach(function (ctrl) {
       ctrl.setError(err_msg)
     })
+  }
+
+}
+
+export class AxProArea extends ControlBasedClass {
+
+  title: string
+
+  constructor(
+    name: string,
+    title: string
+  ) {
+    super(name)
+    this.title = title
   }
 
 }

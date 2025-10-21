@@ -2,6 +2,8 @@
 // AxPro пишет своё состояние в корневой топпик ax-pr
 // При изменении топика, значения из него присваиваются значениям виртуального устройства AxPro
 import { AxProAreas, axProStatesEnum } from '#wbm/global-devices'
+import { AxProArea } from '#wbm/classes/ax-pro'
+import { objectValues } from '#wbm/helpers'
 
 const axProStates = {
   [axProStatesEnum.Armed]: { en: 'Armed', ru: 'Под охраной' },
@@ -17,35 +19,29 @@ const ciaToState: Record<string, number> = {
   '1401': axProStatesEnum.Disarmed,
 }
 
-const patritionsWithDevaces: Record<string, string> = {
-  '01': AxProAreas['GroundFloor'],
-  '02': AxProAreas['Bar'],
-  '03': AxProAreas['Outdoor'],
+const patritionsWithDevaces: Record<string, AxProArea> = {
+  '01': AxProAreas.GroundFloor,
+  '02': AxProAreas.Bar,
+  '03': AxProAreas.Outdoor,
 }
 
-// TDOD: Generate from AxProAreas variable
+const cells: WbRules.ControlOptionsTree = {}
+
+// Генерация контролов из областей охранной системы
+objectValues(AxProAreas).forEach((area) => {
+  // 'AxPro/state_01' -> 'state_01'
+  const key = area.name.split('/')[1]
+  cells[key] = {
+    title: area.title,
+    type: 'value',
+    value: 4,
+    enum: axProStates,
+  }
+})
+
 defineVirtualDevice('AxPro', {
-  title: { en: 'Ax Pro', ru: 'Ax Pro' },
-  cells: {
-    state_01: {
-      title: { en: 'Ground floor', ru: 'Подвал' },
-      type: 'value',
-      value: 4,
-      enum: axProStates,
-    },
-    state_02: {
-      title: { en: 'Bar', ru: 'Бар' },
-      type: 'value',
-      value: 4,
-      enum: axProStates,
-    },
-    state_03: {
-      title: { en: 'Outdoor', ru: 'Улица' },
-      type: 'value',
-      value: 4,
-      enum: axProStates,
-    },
-  },
+  title: 'Ax Pro',
+  cells: cells,
 })
 
 // Тип данных из MQTT
@@ -63,9 +59,7 @@ trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => 
   const state = ciaToState[value.cia_code]
   const partition = patritionsWithDevaces[value.group_or_partition_number]
 
-  const control = getControl(partition)
-
-  if (state && control) {
-    control.setValue(state)
+  if (state) {
+    partition.setValue(state)
   }
 })
