@@ -2,6 +2,7 @@ import { RelayLight, DimmableLight } from '#wbm/classes/wb'
 import { AqaraSensor } from '#wbm/classes/aqara'
 import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
 import { AstroTimerCls } from '#wbm/classes/other'
+import { AxProSensor } from '#wbm/classes/ax-pro'
 
 export const CPUs: Record<string, string> = {
   CPU: 'hwmon/CPU Temperature',
@@ -59,15 +60,15 @@ export const AxProAreas: Record<string, string> = {
 export const AstroTimer = new AstroTimerCls('AstroTimer')
 
 // Датчики AxPro
-export const AxProSensors = [
-  { id: 'ax-pro-1', title: 'ДТ Улица', humidity: true },
-  { id: 'ax-pro-2', title: 'ДТ Погреб', humidity: true },
-  { id: 'ax-pro-3', title: 'ДД Бар' },
-  { id: 'ax-pro-4', title: 'ДД Склад' },
-  { id: 'ax-pro-6', title: 'ДО Спортазл' },
-  { id: 'ax-pro-8', title: 'ДД Спортзал' },
-  { id: 'ax-pro-10', title: 'ДО Бар' },
-  { id: 'ax-pro-12', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-13', title: 'Датчик дыма отключен' },
-  { id: 'ax-pro-11', title: 'Уличная сирена' },
-]
+export const AxProSensors: Record<string, AxProSensor> = {
+  'ax-pro-1': new AxProSensor('ax-pro-1', 'ДТ Улица', true),
+  'ax-pro-2': new AxProSensor('ax-pro-2', 'ДТ Погреб', true),
+  'ax-pro-3': new AxProSensor('ax-pro-3', 'ДД Бар'),
+  'ax-pro-4': new AxProSensor('ax-pro-4', 'ДД Склад'),
+  'ax-pro-6': new AxProSensor('ax-pro-6', 'ДО Спортазл'),
+  'ax-pro-8': new AxProSensor('ax-pro-8', 'ДД Спортзал'),
+  'ax-pro-10': new AxProSensor('ax-pro-10', 'ДО Бар'),
+  'ax-pro-12': new AxProSensor('ax-pro-12', 'Датчик дыма отключен'),
+  'ax-pro-13': new AxProSensor('ax-pro-13', 'Датчик дыма отключен'),
+  'ax-pro-11': new AxProSensor('ax-pro-11', 'Уличная сирена'),
+}

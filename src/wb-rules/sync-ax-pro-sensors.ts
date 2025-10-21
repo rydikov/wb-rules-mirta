@@ -2,7 +2,7 @@
 // AxPro пишет своё состояние в корневой топпик ax-pro-xx где xx это номер датчика
 // При изменении топика, значения из него присваиваются значению виртуального устройства AxPro
 import { AxProSensors } from '#wbm/global-devices'
-import { formatTimestampES5 } from '#wbm/helpers'
+import { formatTimestampES5, objectValues } from '#wbm/helpers'
 
 const cells: WbRules.ControlOptionsTree = {
   temperature: {
@@ -42,15 +42,12 @@ const cells: WbRules.ControlOptionsTree = {
   },
 }
 
-// Генерация виртуальных устройств для датчиков Ax-Pro
-// eslint-disable-next-line @typescript-eslint/prefer-for-of
-for (let i = 0; i < AxProSensors.length; i++) {
-  const d = AxProSensors[i]
-  const v_dev = defineVirtualDevice(d.id, {
+objectValues(AxProSensors).forEach((d) => {
+  const v_dev = defineVirtualDevice(d.name, {
     title: d.title,
     cells: cells,
   })
-  if (d.humidity !== undefined) {
+  if (d.has_humidity) {
     v_dev.addControl('humidity', {
       title: 'Влажность',
       type: 'value',
@@ -60,7 +57,7 @@ for (let i = 0; i < AxProSensors.length; i++) {
       min: 1,
     })
   }
-};
+})
 
 interface SensorMessage {
   temperature: string
