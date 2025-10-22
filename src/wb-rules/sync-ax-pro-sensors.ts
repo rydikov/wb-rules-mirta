@@ -81,6 +81,7 @@ trackMqtt('ax-pro/sensors/#', (message: { topic: string, value: string }) => {
     device.getControl('temperature').setValue(value.temperature)
     device.getControl('charge_value').setValue('chargeValue' in value ? value.chargeValue : 0)
     device.getControl('status').setValue(value.status)
+    device.getControl('is_updated').setValue(true)
     device.getControl('last_seen_timestamp').setValue(value.last_seen)
     device.getControl('last_seen').setValue(formatTimestampES5(value.last_seen * 1000)) // s to ms
 
