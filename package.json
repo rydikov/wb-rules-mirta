@@ -2,7 +2,7 @@
   "name": "wb-rules-mirta",
   "version": "0.0.0",
   "scripts": {
-    "wb:deploy": "scp -r dist wb:/mnt/data/supervisor",
+    "wb:deploy": "scp -r dist wb:/mnt/data/supervisor && ssh wb 'bash /mnt/data/supervisor/post-deploy.sh'",
     "build": "cross-env NODE_ENV=production rollup -c",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
     "test": "vitest run"

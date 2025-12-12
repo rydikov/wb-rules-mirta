@@ -27,11 +27,6 @@ defineVirtualDevice('AstroTimer', {
       readonly: true,
       value: true,
     },
-    backlight: {
-      title: 'Включать подсветки',
-      type: 'switch',
-      value: false,
-    },
   },
 })
 

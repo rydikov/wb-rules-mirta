@@ -11,16 +11,4 @@ export class AstroTimerCls extends DeviceBasedClass {
     return Boolean(this.device?.getControl('is_day').getValue())
   }
 
-  get backlight_topic(): string {
-    return '{}/backlight'.format(this.name)
-  }
-
-  get backlight(): boolean {
-    return Boolean(this.device?.getControl('backlight').getValue())
-  }
-
-  doesNeedToTurnOnBacklight(): boolean {
-    return this.backlight && !this.isDay
-  }
-
 }
