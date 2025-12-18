@@ -11,22 +11,20 @@ function resetMotionTimer() {
 
 // Включаем свет в кабинете, если есть присутствие и нужна подстветка
 defineRule('CABINET_BACKLIGHT', {
-  whenChanged: [PresenceSensors.Cabinet.presence_status_topic],
+  whenChanged: PresenceSensors.Cabinet.presence_status_topic,
   then: function (newValue) {
-    const CabinetBacklightStatus = Boolean(getControl('Backlights/cabinet')?.getValue())
+    const CabinetBacklightIsEnable = Boolean(getControl('Backlights/cabinet')?.getValue())
 
-    log.info('PresenceSensors get new value: {}', newValue)
-    log.info('CabinetBacklightStatus: {}', CabinetBacklightStatus)
-
-    if (newValue && !AstroTimer.isDay && CabinetBacklightStatus && !RelayLights.Cabinet_01.isOn()) {
-      log.info('Backlight is on')
+    if (newValue && !AstroTimer.isDay && CabinetBacklightIsEnable) {
+      log.info('Backlight in cabinet is on')
       RelayLights.Cabinet_01.on()
       resetMotionTimer()
     }
-    else if (!newValue && RelayLights.Cabinet_01.isOn()) {
+    else if (!newValue && CabinetBacklightIsEnable) {
       resetMotionTimer()
       motionTimer = setTimeout(function () {
         RelayLights.Cabinet_01.off()
+        log.info('Backlight in cabinet is off')
         motionTimer = null // Сбрасываем таймер
       }, 120000) as unknown as number// 2 минуты = 120000 миллисекунд
     }
