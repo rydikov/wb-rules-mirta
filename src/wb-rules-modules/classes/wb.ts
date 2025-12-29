@@ -4,15 +4,18 @@ import { ControlBasedClass } from '#wbm/classes/base'
 export class RelayLight extends ControlBasedClass {
 
   isOn(): boolean {
+    log.debug('Control {} is on'.format(this.name))
     return Boolean(this.control?.getValue())
   }
 
   on() {
     this.setValue(true)
+    log.debug('Control {} is on'.format(this.name))
   }
 
   off() {
     this.setValue(false)
+    log.debug('Control {} is off'.format(this.name))
   }
 
 }

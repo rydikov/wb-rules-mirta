@@ -14,6 +14,7 @@ defineRule('CABINET_BACKLIGHT', {
   whenChanged: PresenceSensors.Cabinet.presence_status_topic,
   then: function (newValue) {
     const CabinetBacklightIsEnable = Boolean(getControl('Backlights/cabinet')?.getValue())
+    log.info('Motion detected')
 
     if (newValue && !AstroTimer.isDay && CabinetBacklightIsEnable) {
       log.info('Backlight in cabinet is on')

@@ -7,7 +7,11 @@ defineRule('CHECK_AQARA_SENSORS', {
   then: function () {
     objectValues(AqaraSensors).forEach((aqara_sernsor) => {
       const err_msg = checkAvailability(aqara_sernsor.last_seen / 1000) ? '' : 'r'
-      aqara_sernsor.setError(err_msg)
+      // FIXME: Возникает ошибка при попытке установить ошибку
+      // aqara_sernsor.setError(err_msg)
+      if (err_msg === 'r') {
+        log.error('Aqara sensor offline')
+      }
     })
   },
 })
