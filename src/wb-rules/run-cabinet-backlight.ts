@@ -10,19 +10,24 @@ function resetMotionTimer() {
 }
 
 // Включаем свет в кабинете, если есть присутствие и нужна подстветка
-defineRule('CABINET_BACKLIGHT', {
+// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression, @typescript-eslint/no-unused-vars
+const cabinetBacklightRule = defineRule('CABINET_BACKLIGHT', {
   whenChanged: PresenceSensors.Cabinet.presence_status_topic,
-  then: function (newValue) {
-    const CabinetBacklightIsEnable = Boolean(getControl('Backlights/cabinet')?.getValue())
-    log.info('Motion detected')
+  then: function (newValue: WbRules.MqttValue | undefined) {
+    const cabinetBacklightIsOn = RelayLights.Cabinet_01.value()
 
-    if (newValue && !AstroTimer.isDay && CabinetBacklightIsEnable) {
+    // Если принудительно запустили правило, то newValue будет undefined, явно присваиваем ему статус датчика
+    newValue ??= PresenceSensors.Cabinet.presence_status
+
+    log.info('Motion detected, backlight is {}, value is {}'.format(String(cabinetBacklightIsOn), newValue))
+
+    if (newValue && !cabinetBacklightIsOn) {
       log.info('Backlight in cabinet is on')
       RelayLights.Cabinet_01.on()
       resetMotionTimer()
     }
-    else if (!newValue && CabinetBacklightIsEnable) {
-      resetMotionTimer()
+    else if (!newValue && cabinetBacklightIsOn) {
+      resetMotionTimer() // TODO: Протестировать, нужен ли сброс таймера
       motionTimer = setTimeout(function () {
         RelayLights.Cabinet_01.off()
         log.info('Backlight in cabinet is off')
@@ -33,14 +38,24 @@ defineRule('CABINET_BACKLIGHT', {
 })
 
 defineRule('CABINET_BACKLIGHT_CHECK_BACKLIGHT', {
-  whenChanged: ['Backlights/cabinet'],
-  then: function (newValue) {
+  whenChanged: ['Backlights/cabinet', AstroTimer.is_day_topic],
+  then: function (newValue, devName, cellName) {
+    log.info('CABINET_BACKLIGHT_CHECK_BACKLIGHT -> devName:{}, cellName:{}, newValue:{}', devName, cellName, newValue)
+
+    // Для виртуальных устройств значение запbсывается сразу
+    const isDay = AstroTimer.isDay
+    const cabinetBacklightIsEnable = Boolean(getControl('Backlights/cabinet')?.getValue())
+
     resetMotionTimer()
-    if (newValue && !AstroTimer.isDay && PresenceSensors.Cabinet.presence_status) {
-      RelayLights.Cabinet_01.on()
+
+    if (cabinetBacklightIsEnable || !isDay) {
+      log.debug('Enable')
+      // enableRule(cabinetBacklightRule)
+      // runRule(cabinetBacklightRule)
     }
     else {
-      RelayLights.Cabinet_01.off()
+      log.debug('Disable')
+      // disableRule(cabinetBacklightRule)
     }
   },
 })
