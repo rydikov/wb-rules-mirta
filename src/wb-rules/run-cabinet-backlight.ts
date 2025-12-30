@@ -37,18 +37,20 @@ const cabinetBacklightRule = defineRule('CABINET_BACKLIGHT', {
   },
 })
 
-defineRule('CABINET_BACKLIGHT_CHECK_BACKLIGHT', {
+// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression, @typescript-eslint/no-unused-vars
+const checkCabinetBacklightRule = defineRule('CHECK_CABINET_BACKLIGHT', {
   whenChanged: ['Backlights/cabinet', AstroTimer.is_day_topic],
   then: function (newValue, devName, cellName) {
-    log.info('CABINET_BACKLIGHT_CHECK_BACKLIGHT -> devName:{}, cellName:{}, newValue:{}', devName, cellName, newValue)
+    log.info('CHECK_CABINET_BACKLIGHT -> devName:{}, cellName:{}, newValue:{}', devName, cellName, newValue)
 
-    // Для виртуальных устройств значение запbсывается сразу
-    const isDay = AstroTimer.isDay
+    // Для виртуальных устройств значение записывается сразу, подписка на топики нужна
+    // только как триггеры
+    const isNight = !AstroTimer.isDay
     const cabinetBacklightIsEnable = Boolean(getControl('Backlights/cabinet')?.getValue())
 
     resetMotionTimer()
 
-    if (cabinetBacklightIsEnable || !isDay) {
+    if (cabinetBacklightIsEnable || isNight) {
       log.debug('Enable')
       // enableRule(cabinetBacklightRule)
       // runRule(cabinetBacklightRule)
@@ -59,3 +61,6 @@ defineRule('CABINET_BACKLIGHT_CHECK_BACKLIGHT', {
     }
   },
 })
+
+// Принудительно запускаем правило при загрузке правил
+// runRule(checkCabinetBacklightRule)
