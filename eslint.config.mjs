@@ -3,7 +3,7 @@ import globals from 'globals'
 import globalsMirta from '@mirta/globals/eslint'
 import tseslint from 'typescript-eslint'
 import stylistic from '@stylistic/eslint-plugin'
-import vitest from '@vitest/eslint-plugin'
+
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
@@ -22,11 +22,11 @@ export default defineConfig([
     },
   },
   // TypeScript Defaults
-  tseslint.configs.strictTypeChecked.map(config => ({
+  ...tseslint.configs.strictTypeChecked.map(config => ({
     ...config,
     files: ['**/*.ts'],
   })),
-  tseslint.configs.stylisticTypeChecked.map(config => ({
+  ...tseslint.configs.stylisticTypeChecked.map(config => ({
     ...config,
     files: ['**/*.ts'],
   })),
@@ -57,6 +57,11 @@ export default defineConfig([
           'ignoreRestSiblings': true,
         },
       ],
+      '@typescript-eslint/prefer-nullish-coalescing': ['error', {
+        'ignorePrimitives': {
+          'string': true,
+        },
+      }],
     },
     languageOptions: {
       parserOptions: {
@@ -91,21 +96,7 @@ export default defineConfig([
       }],
     },
   },
-  // Vitest Defaults
-  {
-    files: ['tests/**'],
-    plugins: {
-      vitest,
-    },
-    rules: {
-      ...vitest.configs.recommended.rules,
-    },
-    languageOptions: {
-      globals: {
-        ...vitest.environments.env.globals,
-      },
-    },
-  },
+
   globalIgnores([
     'node_modules/',
     'dist/',

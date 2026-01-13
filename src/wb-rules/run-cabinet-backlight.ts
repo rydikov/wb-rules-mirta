@@ -10,7 +10,6 @@ function resetMotionTimer() {
 }
 
 // Включаем свет в кабинете, если есть присутствие и нужна подстветка
-// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression, @typescript-eslint/no-unused-vars
 const cabinetBacklightRule = defineRule('CABINET_BACKLIGHT', {
   whenChanged: PresenceSensors.Cabinet.presence_status_topic,
   then: function (newValue: WbRules.MqttValue | undefined) {
@@ -37,7 +36,6 @@ const cabinetBacklightRule = defineRule('CABINET_BACKLIGHT', {
   },
 })
 
-// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression, @typescript-eslint/no-unused-vars
 const checkCabinetBacklightRule = defineRule('CHECK_CABINET_BACKLIGHT', {
   whenChanged: ['Backlights/cabinet', AstroTimer.is_day_topic],
   then: function (newValue, devName, cellName) {
@@ -50,17 +48,17 @@ const checkCabinetBacklightRule = defineRule('CHECK_CABINET_BACKLIGHT', {
 
     resetMotionTimer()
 
-    if (cabinetBacklightIsEnable || isNight) {
+    if (cabinetBacklightIsEnable && isNight) {
       log.debug('Enable')
-      // enableRule(cabinetBacklightRule)
-      // runRule(cabinetBacklightRule)
+      enableRule(cabinetBacklightRule)
+      runRule(cabinetBacklightRule)
     }
     else {
       log.debug('Disable')
-      // disableRule(cabinetBacklightRule)
+      disableRule(cabinetBacklightRule)
     }
   },
 })
 
 // Принудительно запускаем правило при загрузке правил
-// runRule(checkCabinetBacklightRule)
+runRule(checkCabinetBacklightRule)
