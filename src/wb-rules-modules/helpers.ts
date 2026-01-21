@@ -31,7 +31,10 @@ export function objectValues<T extends Record<string, unknown>>(obj: T): T[keyof
 }
 
 // return true if available
-export function checkAvailability(last_seen: number): boolean {
+export function checkAvailability(
+  last_seen: number,
+  ttlSeconds = 3600 // 1 hour
+): boolean {
   const tsNow = Date.now() / 1000 // convert to sec
-  return tsNow - last_seen < 3600 // 3600 = 1 hour
+  return tsNow - last_seen < ttlSeconds
 }

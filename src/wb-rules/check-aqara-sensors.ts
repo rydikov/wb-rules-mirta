@@ -1,16 +1,17 @@
 // Проверяем что данные корректно приходят от Датчиков Aqara
 import { AqaraSensors } from '#wbm/global-devices'
-import { objectValues, checkAvailability } from '#wbm/helpers'
+import { objectValues, checkAvailability, formatTimestampES5 } from '#wbm/helpers'
 
 defineRule('CHECK_AQARA_SENSORS', {
   when: cron('@hourly'),
   then: function () {
     objectValues(AqaraSensors).forEach((aqara_sernsor) => {
-      const err_msg = checkAvailability(aqara_sernsor.last_seen / 1000) ? '' : 'r'
+      // convert to sec, check 3 hours
+      const err_msg = checkAvailability(aqara_sernsor.last_seen / 1000, 3600 * 3) ? '' : 'r'
       // FIXME: Возникает ошибка при попытке установить ошибку
       // aqara_sernsor.setError(err_msg)
       if (err_msg === 'r') {
-        log.error('Aqara sensor offline')
+        log.error('Aqara sensor offline, last seen {}', formatTimestampES5(aqara_sernsor.last_seen / 1000))
       }
     })
   },
