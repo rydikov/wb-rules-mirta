@@ -1,0 +1,223 @@
+WB-RULES + MIRTA CONTEXT (LLM-Compact, final)
+
+// === Среда выполнения (wb-rules) ===
+- Движок: Duktape (ES5.1)
+- Нет: let/const, Promise, async/await, Reflect, Map/Set/WeakMap
+- Есть: var, JSON, Date, RegExp, try/catch
+- .includes — работает (через Babel: array-includes)
+- Файлы: /etc/wb-rules/*.js (скрипты), /etc/wb-rules-modules/ (модули)
+- require('name') → /etc/wb-rules-modules/name.js | /usr/share/...
+- module.static — общее состояние между инстансами модуля
+- Пути: WB_RULES_MODULES (приоритет: слева направо)
+- Пакетный менеджер: pnpm (workspaces)
+
+// === Mirta ===
+- ESM → CJS → ES5 (Rollup + Babel + TS)
+- Поддержка .ts и .js (allowJs: true)
+- Инструменты: ESLint, Vitest, dotenv
+- async/await — не используются
+- CLI: pnpm create mirta@latest
+- Типы проектов:
+  - Classic: Starter, Store (@mirta/store)
+  - Mono: Sites (многие объекты), Package (npm-пакет + example)
+
+// === Структура классического проекта ===
+- src/
+  - wb-rules/           → скрипты → /etc/wb-rules/
+  - wb-rules-modules/   → модули → /etc/wb-rules-modules/
+- Сохраняет прямую ассоциацию со структурой контроллера
+
+// === Импорты модулей ===
+- Локальные: #wbm/* → ./src/wb-rules-modules/*.js
+  - На сборке: → require('name') (без .js)
+- NPM-пакеты: @mirta/store → из node_modules
+  - На сборке: → require('@mirta/store')
+  - Попадает в: dist/es5/wb-rules-modules/packages/@mirta/store.js
+- Только используемые модули попадают в финальный бандл (tree-shaking на уровне Rollup)
+
+// === TypeScript (tsconfig) ===
+- Базовая конфигурация: @mirta/tsconfig (extends)
+- Ключевые опции:
+  - "target": "esnext", "module": "esnext"
+  - "moduleResolution": "bundler", "verbatimModuleSyntax": true
+  - "noEmit": true — транспиляция делегирована Rollup
+  - "resolveJsonModule": true, "allowSyntheticDefaultImports": true
+  - "strictNullChecks": true — требуется для unit-тестов
+  - "skipLibCheck": false — полная проверка типов
+
+// === Сборка (runtime) ===
+- Для классических проектов: rollup -c node:@mirta/rollup/config
+- Или: defineConfig() из '@mirta/rollup'
+- Вывод: dist/es5/
+  - Формат: CJS (CommonJS)
+  - Транспиляция: TS → JS → ES5 (Babel)
+  - Переписывает require() (wb-rules-imports)
+  - Подставляет __DEV__, __TEST__, .env
+  - Очистка dist перед сборкой
+  - preserveModules: сохраняет структуру
+- Точка входа: src/wb-rules/*.[jt]s
+
+// === Сборка (пакеты) ===
+- Для пакетов: rollup -c node:@mirta/rollup/config-package
+- Или: definePackageConfig() из '@mirta/rollup'
+- Вывод: dist/
+  - Формат: ESM (.mjs)
+  - Не транспилируется в ES5 — сохраняется современный синтаксис
+  - Поддерживает tree-shaking
+- Типы:
+  - Генерируются .d.ts → в dist/dts/
+  - AST-трансформация (dtsAlias): исправляет пути (например, #src/utils → ./utils)
+  - Финальные файлы: dist/name.d.mts
+- Управление входами:
+  - Основано на "exports" в package.json
+  - Строгая проверка соответствия input ↔ exports
+- Поддержка монорепозитория:
+  - Работает из корня
+  - Авто-определение cwd и package.json
+- Плагины:
+  - del: очистка dist/ и dist/dts/
+  - typescript: с declaration
+  - dts + dtsAlias: генерация и исправление .d.mts
+  - node-resolve, commonjs
+  - copy: public/* → dist/
+  - replace: __DEV__, __TEST__ (оставляются для бандлера)
+
+// === Деплой ===
+- Утилита: mirta deploy (из @mirta/cli)
+- Конфиг: mirta.config.json
+- Поддержка переменных: "${VAR}" в connection и профилях
+- Параметры подключения (через ;):
+  - pkcs11=/path — библиотека PKCS#11 (напр. Рутокен ЭЦП)
+    - Важно: путь **не должен быть симлинком**, иначе ssh-agent не примет
+  - key=~/.ssh/id_*_sk — путь к FIDO2-ключу
+    - Поддерживает тильду: раскрывается в WSL2 и Unix
+  - ttl=1h — время жизни PIN-кода (для pkcs11 и key), опциональный, по умолчанию 15m
+  - wsl=Debian — WSL2-дистрибутив (для rsync под Windows), опциональный
+- Приоритет: pkcs11 > key
+- Профили:
+  - Определяют: connection + mappings
+  - Если в профиле не указано "connection" — используется "default"
+- Команды:
+  - pnpm mirta deploy                    → профиль "default"
+  - pnpm mirta deploy --profile <name>   → указать профиль
+  - pnpm mirta deploy --to <conn>        → переопределить connection
+  - Приоритет: --to > профиль > default
+- Маппинги:
+  - wb-rules-es5: dist/es5/wb-rules/ → /mnt/data/etc/wb-rules/ (с cleanup)
+  - + wb-rules-modules → /mnt/data/etc/wb-rules-modules/
+  - protect: файлы вроде alarms.conf не удаляются
+  - templates: копирует в /etc/wb-mqtt-serial.conf.d/templates/ (без cleanup)
+- Деплой в /mnt/data — напрямую, обходит симлинки, надёжно
+
+// === Файловая система (Wiren Board) ===
+- /etc/wb-rules → симлинк на /mnt/data/etc/wb-rules
+- /etc/wb-rules-modules → симлинк на /mnt/data/etc/wb-rules-modules
+- /mnt/data — персистентное хранилище (сохраняется при обновлении)
+- Рекомендуется деплоить в /mnt/data/... напрямую для надёжности
+
+// === dev — доступ к MQTT ===
+- dev["device/control"] ↔ /devices/device/controls/control
+- Синтаксис: dev.device.control, dev["device"].control
+- Тип: WbRules.MqttValue = string | number | boolean
+- Гварды: isString, isBoolean, isNumber (@mirta/basics) — для сужения
+- isObject, isPlainObject — для внутренних структур, не для MqttValue
+
+// === Глобальные сущности ===
+- log.info/debug/warning/error(format, ...), log(value)
+- dev: доступ к MQTT
+- timers: .firing, .stop()
+- __filename: string
+- cron(spec): CronEntry
+- defineRule(name?, {whenChanged, asSoonAs, when, then}): RuleHandle
+  - whenChanged: фильтрует одинаковые значения (не срабатывает)
+  - asSoonAs: срабатывает при запуске скрипта
+  - when: произвольное условие
+- disableRule, enableRule, runRule
+- defineVirtualDevice, getDevice, getControl
+- startTimer, startTicker
+- Notify.sendEmail/SMS/TelegramMessage
+- Alarms.load(config)
+- trackMqtt(topic, cb): вызывает callback **на каждое сообщение** (без фильтрации)
+- defineAlias
+- readConfig
+- spawn, runShellCommand
+- StorableObject<T>, new PersistentStorage
+- String.prototype.format, .xformat (с eval — опасно)
+- __DEV__, __TEST__
+
+// === @mirta/store ===
+- Реактивное хранилище (аналог Pinia), основано на Proxy + module.static
+- Безопасная альтернатива global.__proto__.*
+- defineStore(typeId, { state, getters, actions })
+- useStore = defineStore(...) → хук
+- Экземпляры:
+  - useStore() — общий экземпляр (shared state через module.static)
+  - useStore(id) — именованный (изолированное состояние по id)
+- API:
+  - store.$state — прямой доступ к состоянию
+  - store.$patch(partialState) — обновление части состояния
+  - store.$patch(state => { ... }) — мутация с мерджем
+  - store.$reset() — сброс к начальному состоянию
+  - store.$id — идентификатор экземпляра
+  - store.$typeId — тип хранилища
+- Поведение:
+  - Геттеры:
+    - могут использовать `state` или `this`
+    - при использовании `this` — доступны `state` и другие геттеры
+    - **не могут вызывать actions**
+    - `this` → `TState & _StoreWithGetters<TGetters}`
+  - Actions:
+    - имеют полный доступ: `state`, геттеры, другие actions, `$patch`, `$reset`
+    - могут вызывать друг друга
+    - `this` → `TState & _StoreWithGetters & _StoreWithActions & _StoreWithState`
+  - Поддержка nullish coalescing (??), нулевых значений
+  - readonly-свойства: геттеры, actions, $-поля нельзя перезаписать
+  - JSON.stringify(store.$state) — для сериализации
+  - defineStore с пустым state/actions/getters — поддерживается
+- Ошибки: StoreError (alreadyDefined, readonlyProperty)
+
+// === Тестирование и отладка (@mirta/testing) ===
+- Пакет: @mirta/testing — симулятор среды wb-rules + zero-config Vitest
+- Два уровня моков:
+  1. setup-global (через setupFiles) — минимальные заглушки, чтобы тесты запустились
+  2. useSimulator() — полноценная симуляция поведения
+- setup-global (global.ts) мокирует:
+  - module, log, debug, dev, defineRule, trackMqtt, getDevice, getControl
+  - Notify, Alarms, defineVirtualDevice, disableRule, enableRule, runRule
+  - Использует vitest-mock-extended → типизированные моки
+  - Не реализует поведение — только заглушки
+- useSimulator():
+  - Добавляет реальное поведение: срабатывание правил, отслеживание MQTT
+  - Перехватывает dev['device/control'] (get/set)
+  - Управляет вызовами defineRule, trackMqtt
+  - Позволяет запускать сценарии: sim.defineRule.run(...)
+- Zero-config:
+  - "test": "vitest run --config @mirta/testing/config"
+  - Автоматически подключает setupFiles и алиасы
+  - Работает в classic и mono проектах
+- Плюсы:
+  - Быстрая итерация без деплоя
+  - Юнит-тесты и сценарные тесты
+  - Отладка с breakpoint (через Vitest + VSCode)
+  - Автоматический алиасинг: import из '@mirta/store' → src/
+- Ограничения:
+  - setup-global не имитирует поведение — только типы
+  - useSimulator() в активной разработке
+
+// === Релиз и публикация (@mirta/cli) ===
+- mirta release:
+  - Автоматическое семантическое версионирование (semver)
+  - Обновляет package.json, создаёт коммит и тег
+- mirta publish:
+  - Публикация в npm
+  - Запускается в CI/CD как финальный шаг
+- GitHub Actions:
+  - Шаблоны включают: test.yml, build.yml
+  - release.yml — пока не включён (в разработке)
+  - Использует workflow_call, условные шаги, environment: Release
+  - Поддерживает автоматические PR (pkg-pr-new) для пакетов
+
+// === Типы ===
+- Branded<T, 'B'>: TValue & {readonly __brand: 'B'}
+- AtLeastOne<T>: Partial<T> & { [K in keyof T]: Pick<T,K> }[keyof T]
+- Expand<T>: { [K in keyof T]: T[K] } & {}

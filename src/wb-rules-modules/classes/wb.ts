@@ -25,9 +25,9 @@ export class DimmableLight extends RelayLight {
 
   setBrightness(percent: number) {
     // device/K1 => device/channel1
-    const brightness_control_name = this.name.replace('/K', '/channel')
-    const brightness_control = getControl(brightness_control_name)
-    brightness_control?.setValue(percent)
+    const brightnessControlName = this.name.replace('/K', '/channel')
+    const brightnessControl = getControl(brightnessControlName)
+    brightnessControl?.setValue(percent)
   }
 
 }
