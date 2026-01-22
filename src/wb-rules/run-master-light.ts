@@ -16,7 +16,7 @@
 import { RelayLights } from '#wbm/global-devices'
 
 defineRule('CHECK_AQARA_SENSORS', {
-  when: cron('@hourly'),
+  when: cron('0 22 * * *'),
   then: function () {
     log.info('Backlight in cabinet is on (cron)')
     RelayLights.Cabinet_01.on()
