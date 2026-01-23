@@ -20,33 +20,32 @@ defineRule('CABINET_BACKLIGHT', {
     const isBacklightEnabled = Boolean(getControl('Backlights/cabinet')?.getValue())
     const isBacklightOn = Boolean(RelayLights.Cabinet_01.value())
 
-    // Detect if this is a motion event
+    // Проверяем, событие ли это движения
     const isMotionEvent = devName === PresenceSensors.Cabinet.name
 
-    log.info('Cabinet backlight: motion={}, enabled={}, night={}, state={}',
+    log.info('Подсветка кабинета: движение={}, подстветка включена={}, ночь={}, состояние лампы={}',
       isMotionEvent, isBacklightEnabled, isNight, isBacklightOn)
 
-    // Handle condition changes (manual toggle or day/night)
+    // Обработка изменения условий (ручное включение подсветки или день/ночь)
     if (!isMotionEvent) {
       resetMotionTimer()
-
-      // Turn off light if conditions are no longer met
+      // Выключаем свет, если подстветка отключена или сейчас день
       if ((!isBacklightEnabled || !isNight) && isBacklightOn) {
         RelayLights.Cabinet_01.off()
-        log.info('Cabinet backlight turned off (conditions not met)')
+        log.info('Подсветка кабинета выключена')
       }
     }
 
-    // Only control light if conditions are met
+    // Если подсветка отключена или сейчас день, ничего не делаем
     if (!isBacklightEnabled || !isNight) {
       return
     }
 
-    // Handle motion event - newValue could be from motion, Backlights, or AstroTimer
+    // Явно определяем состояние датчика присутствия - newValue может быть от датчика, Backlights или AstroTimer
     const presenceStatus = isMotionEvent ? newValue : PresenceSensors.Cabinet.presence_status
 
     if (presenceStatus) {
-      log.info('Cabinet backlight turned on (motion detected)')
+      log.info('Подсветка кабинета включена (обнаружено движение)')
       RelayLights.Cabinet_01.on()
       resetMotionTimer()
     }
@@ -54,9 +53,9 @@ defineRule('CABINET_BACKLIGHT', {
       resetMotionTimer()
       motionTimer = setTimeout(function () {
         RelayLights.Cabinet_01.off()
-        log.info('Cabinet backlight turned off (motion timeout)')
+        log.info('Подсветка кабинета выключена (таймаут движения)')
         motionTimer = null
-      }, 120000) as unknown as number // 2 minutes
+      }, 120000) as unknown as number // 2 минуты
     }
   },
 })
