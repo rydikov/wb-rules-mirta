@@ -3,15 +3,15 @@ import { DeviceBasedClass } from '#wbm/classes/base'
 // Класс для датчика присутствия mtdx62-mb
 export class MTDX62MB extends DeviceBasedClass {
 
-  get presence_status_topic(): string {
+  get presenceStatusTopic(): string {
     return '{}/presence_status'.format(this.name)
   }
 
-  get presence_status(): boolean {
+  get presenceStatus(): boolean {
     return Boolean(this.device?.getControl('presence_status').getValue())
   }
 
-  get illuminance_topic(): string {
+  get illuminanceTopic(): string {
     return '{}/illuminance'.format(this.name)
   }
 
@@ -19,11 +19,11 @@ export class MTDX62MB extends DeviceBasedClass {
     return Number(this.device?.getControl('illuminance').getValue())
   }
 
-  get target_distance_topic(): string {
+  get targetDistanceTopic(): string {
     return '{}/target_distance'.format(this.name)
   }
 
-  get target_distance(): number {
+  get targetDistance(): number {
     return Number(this.device?.getControl('target_distance').getValue())
   }
 

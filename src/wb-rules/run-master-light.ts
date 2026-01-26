@@ -13,16 +13,4 @@
 //   ],
 // })
 
-import { RelayLights } from '#wbm/global-devices'
-
-defineRule('CHECK_AQARA_SENSORS', {
-  when: cron('0 22 * * *'),
-  then: function () {
-    log.info('Backlight in cabinet is on (cron)')
-    RelayLights.Cabinet_01.on()
-    setTimeout(function () {
-      RelayLights.Cabinet_01.off()
-      log.info('Backlight in cabinet is off (cron)')
-    }, 120000) as unknown as number// 2 минуты = 120000 миллисекунд
-  },
-})
+log.debug('Debug')

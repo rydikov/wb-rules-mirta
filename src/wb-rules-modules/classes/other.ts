@@ -3,7 +3,7 @@ import { DeviceBasedClass } from '#wbm/classes/base'
 // Класс Астрономического таймера
 export class AstroTimerCls extends DeviceBasedClass {
 
-  get is_day_topic(): string {
+  get isDayTopic(): string {
     return '{}/is_day'.format(this.name)
   }
 

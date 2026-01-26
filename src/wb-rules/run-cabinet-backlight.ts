@@ -20,9 +20,9 @@ function makeBacklightRule(
 
   defineRule(ruleName, {
     whenChanged: [
-      presenceDevice.presence_status_topic,
+      presenceDevice.presenceStatusTopic,
       backlightControl,
-      AstroTimer.is_day_topic,
+      AstroTimer.isDayTopic,
     ],
     then: function (newValue, devName) {
       const isNight = !AstroTimer.isDay
@@ -32,13 +32,13 @@ function makeBacklightRule(
       // Проверяем, событие ли это движения
       const isMotionEvent = devName === presenceDevice.name
 
-      log.info('Подсветка: движение={}, подстветка включена={}, ночь={}, состояние лампы={}',
+      log.info('Подсветка: движение={}, подсветка включена={}, ночь={}, состояние лампы={}',
         isMotionEvent, isBacklightEnabled, isNight, isBacklightOn)
 
       // Обработка изменения условий (ручное включение подсветки или день/ночь)
       if (!isMotionEvent) {
         resetMotionTimer()
-        // Выключаем свет, если подстветка отключена или сейчас день
+        // Выключаем свет, если подсветка отключена или сейчас день
         if ((!isBacklightEnabled || !isNight) && isBacklightOn) {
           backlightDevice.off()
           log.info('Подсветка выключена')
@@ -51,7 +51,7 @@ function makeBacklightRule(
       }
 
       // Явно определяем состояние датчика присутствия - newValue может быть от датчика, Backlights или AstroTimer
-      const presenceStatus = isMotionEvent ? newValue : presenceDevice.presence_status
+      const presenceStatus = isMotionEvent ? newValue : presenceDevice.presenceStatus
 
       if (presenceStatus) {
         log.info('Подсветка включена (обнаружено движение)')
