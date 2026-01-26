@@ -9,6 +9,10 @@ const recipients: WbRules.Alarms.TelegramRecipient = {
   'chatId': tgConf.chatId,
 }
 
+// Импортируем данные датчиков
+import { AxProSensors } from '#wbm/global-devices'
+// import { objectValues } from '#wbm/helpers'
+
 // Список алармов Zigbee устройств.
 // Как только сигнал от устройства становится равным 0 - приходит оповещение
 const zigbeeAlarms: WbRules.Alarms.Config = {
@@ -33,37 +37,18 @@ const zigbeeAlarms: WbRules.Alarms.Config = {
 Alarms.load(zigbeeAlarms)
 
 // Список алармов сенсоров сигнализации Ax-Pro.
-// Как только статус устройства становится offline - приходит оповещение
+// Как только у устройства флаг is_updated становится false - приходит оповещение
 const axProAlarms: WbRules.Alarms.Config = {
   'deviceName': 'Ax Pro Alarms',
   'deviceTitle': 'Ax Pro Alarms',
 
   'recipients': [recipients],
 
-  'alarms': [
-  // TODO: build dynamically
-    {
-      'name': 'ax-pro-1',
-      'cell': 'ax-pro-1/is_updated',
-      'expectedValue': true,
-    },
-    {
-      'name': 'ax-pro-2',
-      'cell': 'ax-pro-2/is_updated',
-      'expectedValue': true,
-    },
-    {
-      'name': 'ax-pro-3',
-      'cell': 'ax-pro-3/is_updated',
-      'expectedValue': true,
-    },
-    {
-      'name': 'ax-pro-4',
-      'cell': 'ax-pro-4/is_updated',
-      'expectedValue': true,
-    },
-
-  ],
+  'alarms': Object.keys(AxProSensors).map(sensorId => ({
+    'name': sensorId,
+    'cell': `${sensorId}/is_updated`,
+    'expectedValue': true,
+  })),
 }
 
 Alarms.load(axProAlarms)
