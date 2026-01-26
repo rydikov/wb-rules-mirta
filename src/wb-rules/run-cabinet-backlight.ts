@@ -34,6 +34,7 @@ function makeBacklightRule(
 
       log.info('Подсветка: движение={}, подсветка включена={}, ночь={}, состояние лампы={}',
         isMotionEvent, isBacklightEnabled, isNight, isBacklightOn)
+      log.info('Новое значение: {} от устройства: {}', newValue, devName)
 
       // Обработка изменения условий (ручное включение подсветки или день/ночь)
       if (!isMotionEvent) {
