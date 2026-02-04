@@ -1,6 +1,6 @@
 import { RelayLight } from '#wbm/classes/wb'
 
-export function useMasterControl(options: {
+export function makeMasterControlRule(options: {
   ruleName: string
   control: string
   loads: RelayLight[]
