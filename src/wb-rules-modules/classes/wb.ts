@@ -32,6 +32,31 @@ export class DimmableLight extends RelayLight {
 
 }
 
+export class RGBLight extends DimmableLight {
+
+  setColor(red: number, green: number, blue: number) {
+    const r = this.normalizeColorValue(red)
+    const g = this.normalizeColorValue(green)
+    const b = this.normalizeColorValue(blue)
+
+    // WbLed color control expects value in "R;G;B" format.
+    this.setValue('{0};{1};{2}'.format(r, g, b))
+
+    // For some WbLed controls color is applied via paired "<control>/on" topic.
+    const colorOnControl = getControl('{}/on'.format(this.name))
+    colorOnControl?.setValue(true)
+  }
+
+  private normalizeColorValue(value: number): number {
+    if (Number.isNaN(value)) {
+      return 0
+    }
+
+    return Math.max(0, Math.min(255, Math.round(value)))
+  }
+
+}
+
 export class LedLight extends ControlBasedClass {
 
 }
