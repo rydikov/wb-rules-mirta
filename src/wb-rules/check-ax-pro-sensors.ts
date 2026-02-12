@@ -6,8 +6,8 @@ defineRule('CHECK_AXPRO_SENSORS', {
   when: cron('@hourly'),
   then: function () {
     objectValues(AxProSensors).forEach((ax_pro_sensor) => {
-      const device_is_available = checkAvailability(ax_pro_sensor.last_seen_timestamp)
-      ax_pro_sensor.setIsUpated(device_is_available)
+      const device_is_available = checkAvailability(ax_pro_sensor.lastSeenTimestamp)
+      ax_pro_sensor.setIsUpdated(device_is_available)
 
       const err_msg = ax_pro_sensor.status === 'offline' || !device_is_available ? 'r' : ''
       ax_pro_sensor.setError(err_msg)

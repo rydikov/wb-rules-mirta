@@ -1,5 +1,5 @@
 // Синхронизация статуса охранной системы с виртуальным устройством ВБ
-// AxPro пишет своё состояние в корневой топпик ax-pr
+// AxPro пишет своё состояние в корневой топик ax-pr
 // При изменении топика, значения из него присваиваются значениям виртуального устройства AxPro
 import { AxProAreas, axProStatesEnum } from '#wbm/global-devices'
 import { AxProArea } from '#wbm/classes/ax-pro'
@@ -19,7 +19,7 @@ const ciaToState: Record<string, number> = {
   '1401': axProStatesEnum.Disarmed,
 }
 
-const patritionsWithDevaces: Record<string, AxProArea> = {
+const partitionsWithDevices: Record<string, AxProArea> = {
   '01': AxProAreas.GroundFloor,
   '02': AxProAreas.Bar,
   '03': AxProAreas.Outdoor,
@@ -57,7 +57,7 @@ trackMqtt('ax-pro/partitions/#', (message: { topic: string, value: string }) => 
   const value = JSON.parse(message.value) as PartitionMessage
 
   const state = ciaToState[value.cia_code]
-  const partition = patritionsWithDevaces[value.group_or_partition_number]
+  const partition = partitionsWithDevices[value.group_or_partition_number]
 
   if (state) {
     partition.setValue(state)

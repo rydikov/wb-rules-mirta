@@ -66,7 +66,7 @@ export const AxProSensors: Record<string, AxProSensor> = {
   'ax-pro-2': new AxProSensor('ax-pro-2', 'ДТ Погреб', true),
   'ax-pro-3': new AxProSensor('ax-pro-3', 'ДД Бар'),
   'ax-pro-4': new AxProSensor('ax-pro-4', 'ДД Склад'),
-  'ax-pro-6': new AxProSensor('ax-pro-6', 'ДО Спортазл'),
+  'ax-pro-6': new AxProSensor('ax-pro-6', 'ДО Спортзал'),
   'ax-pro-8': new AxProSensor('ax-pro-8', 'ДД Спортзал'),
   'ax-pro-10': new AxProSensor('ax-pro-10', 'ДО Бар'),
   'ax-pro-12': new AxProSensor('ax-pro-12', 'Датчик дыма отключен'),

@@ -16,7 +16,7 @@ export class AxProSensor extends DeviceBasedClass {
     this.has_humidity = has_humidity
   }
 
-  get last_seen_timestamp(): number {
+  get lastSeenTimestamp(): number {
     return Number(this.device?.getControl('last_seen_timestamp').getValue())
   }
 
@@ -24,7 +24,7 @@ export class AxProSensor extends DeviceBasedClass {
     return String(this.device?.getControl('last_seen_timestamp').getValue())
   }
 
-  get humidity_topic(): string {
+  get humidityTopic(): string {
     return '{}/humidity'.format(this.name)
   }
 
@@ -37,7 +37,7 @@ export class AxProSensor extends DeviceBasedClass {
     }
   }
 
-  get temperature_topic(): string {
+  get temperatureTopic(): string {
     return '{}/temperature'.format(this.name)
   }
 
@@ -45,13 +45,13 @@ export class AxProSensor extends DeviceBasedClass {
     return Number(this.device?.getControl('temperature').getValue())
   }
 
-  setIsUpated(is_updated: boolean) {
-    this.device?.getControl('is_updated').setValue(is_updated)
+  setIsUpdated(isUpdated: boolean) {
+    this.device?.getControl('is_updated').setValue(isUpdated)
   }
 
-  setError(err_msg: string) {
+  setError(errMsg: string) {
     this.device?.controlsList().forEach(function (ctrl) {
-      ctrl.setError(err_msg)
+      ctrl.setError(errMsg)
     })
   }
 
