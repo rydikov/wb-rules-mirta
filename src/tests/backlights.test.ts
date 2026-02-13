@@ -8,9 +8,9 @@ beforeEach(() => {
   simulator.reset()
 })
 
-describe('useThermostat', () => {
+describe('useBacklight', () => {
   beforeEach(() => {
-    dev[RelayLights.Cabinet_01.topic] = false
+    RelayLights.Cabinet_01.setValue(false)
     makeBacklightRule(
       'TEST_BACKLIGHT',
       PresenceSensors.Cabinet,
