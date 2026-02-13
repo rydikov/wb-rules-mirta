@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "types": [
+      "vitest/globals",
       "@mirta/globals",
       "node"
     ]

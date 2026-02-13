@@ -27,6 +27,10 @@ export class ControlBasedClass {
     this.name = name
   }
 
+  get topic() {
+    return this.name
+  }
+
   value() {
     return this.control?.getValue()
   }
