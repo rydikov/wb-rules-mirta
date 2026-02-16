@@ -1,4 +1,4 @@
-import { ControlBasedClass } from '#wbm/classes/base'
+import { ControlBasedClass, DeviceBasedClass } from '#wbm/classes/base'
 
 // Свет включающийся через реле
 export class RelayLight extends ControlBasedClass {
@@ -58,5 +58,73 @@ export class RGBLight extends DimmableLight {
 }
 
 export class LedLight extends ControlBasedClass {
+
+}
+
+export class MSW extends DeviceBasedClass {
+
+  get temperatureTopic(): string {
+    return '{}/Temperature'.format(this.name)
+  }
+
+  get temperature(): number {
+    return Number(this.device?.getControl('Temperature').getValue())
+  }
+
+  get humidityTopic(): string {
+    return '{}/Humidity'.format(this.name)
+  }
+
+  get humidity(): number {
+    return Number(this.device?.getControl('Humidity').getValue())
+  }
+
+  get co2Topic(): string {
+    return '{}/CO2'.format(this.name)
+  }
+
+  get co2(): number {
+    return Number(this.device?.getControl('CO2').getValue())
+  }
+
+  get airQualityVocTopic(): string {
+    return '{}/Air Quality (VOC)'.format(this.name)
+  }
+
+  get airQualityVoc(): number {
+    return Number(this.device?.getControl('Air Quality (VOC)').getValue())
+  }
+
+  get soundLevelTopic(): string {
+    return '{}/Sound Level'.format(this.name)
+  }
+
+  get soundLevel(): number {
+    return Number(this.device?.getControl('Sound Level').getValue())
+  }
+
+  get illuminanceTopic(): string {
+    return '{}/Illuminance'.format(this.name)
+  }
+
+  get illuminance(): number {
+    return Number(this.device?.getControl('Illuminance').getValue())
+  }
+
+  get maxMotionTopic(): string {
+    return '{}/Max Motion'.format(this.name)
+  }
+
+  get maxMotion(): number {
+    return Number(this.device?.getControl('Max Motion').getValue())
+  }
+
+  get currentMotionTopic(): string {
+    return '{}/Current Motion'.format(this.name)
+  }
+
+  get currentMotion(): number {
+    return Number(this.device?.getControl('Current Motion').getValue())
+  }
 
 }

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { RelayLight, DimmableLight } from '#wbm/classes/wb'
+import { RelayLight, DimmableLight, MSW } from '#wbm/classes/wb'
 import { AqaraSensor } from '#wbm/classes/aqara'
 import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
 import { AstroTimerCls } from '#wbm/classes/other'
@@ -28,6 +28,10 @@ export const RelayLights: Record<string, RelayLight> = {
   Room1_4: new RelayLight('wb-mr6cv3_217/K4'),
   Room1_5: new RelayLight('wb-mr6cv3_217/K5'),
   Cabinet_01: new RelayLight('wb-mr6cv3_217/K6'),
+}
+
+export const MSWs: Record<string, MSW> = {
+  Cabinet: new MSW('wb-msw-v4_126'),
 }
 
 // Диммируемый свет на MDM3, в настройках модуля должны быть установки для лампы

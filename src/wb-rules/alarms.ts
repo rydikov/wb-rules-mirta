@@ -52,3 +52,24 @@ const axProAlarms: WbRules.Alarms.Config = {
 }
 
 Alarms.load(axProAlarms)
+
+// Список алармов CO2
+// Как только уровень становится больше 1000, приходит оповещение
+const Co2Alarms: WbRules.Alarms.Config = {
+  'deviceName': 'CO2 Alarms',
+  'deviceTitle': 'CO2 Alarms',
+
+  'recipients': [recipients],
+
+  'alarms': [
+  // TODO: build dynamically
+    {
+      'name': 'wb-msw-v4_126',
+      'cell': 'wb-msw-v4_126/CO2',
+      'maxValue': 1000,
+    },
+
+  ],
+}
+
+Alarms.load(Co2Alarms)
