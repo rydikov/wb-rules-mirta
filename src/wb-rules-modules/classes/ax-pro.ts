@@ -46,6 +46,7 @@ export class AxProSensor extends DeviceBasedClass {
   }
 
   setIsUpdated(isUpdated: boolean) {
+    log.debug('AxPro sensor: {} isUpdated {}'.format(JSON.stringify(this.device), isUpdated))
     this.device?.getControl('is_updated').setValue(isUpdated)
   }
 

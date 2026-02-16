@@ -11,7 +11,7 @@ defineRule('CHECK_AQARA_SENSORS', {
       // FIXME: Возникает ошибка при попытке установить ошибку
       // aqara_sernsor.setError(err_msg)
       if (err_msg === 'r') {
-        log.error('Aqara sensor offline, last seen {}', formatTimestampES5(aqara_sernsor.lastSeen / 1000))
+        log.error('Aqara sensor: {} offline, last seen {}'.format(JSON.stringify(aqara_sernsor), formatTimestampES5(aqara_sernsor.lastSeen / 1000)))
       }
     })
   },
