@@ -11,7 +11,7 @@ const recipients: WbRules.Alarms.TelegramRecipient = {
 
 // Импортируем данные датчиков
 import { AxProSensors, MSWs } from '#wbm/global-devices'
-// import { objectValues } from '#wbm/helpers'
+import { objectValues } from '#wbm/helpers'
 
 // Список алармов Zigbee устройств.
 // Как только сигнал от устройства становится равным 0 - приходит оповещение
@@ -61,7 +61,7 @@ const Co2Alarms: WbRules.Alarms.Config = {
 
   'recipients': [recipients],
 
-  'alarms': Object.values(MSWs).map(sensor => ({
+  'alarms': objectValues(MSWs).map(sensor => ({
     'name': sensor.name,
     'cell': sensor.co2Topic,
     'maxValue': 1000,

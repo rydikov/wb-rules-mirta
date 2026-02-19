@@ -1,5 +1,4 @@
-import { AstroTimer } from '#wbm/global-devices'
-import { backlightControls } from '#wb/backlights'
+import { AstroTimer, backlightControls } from '#wbm/global-devices'
 
 // Если подсветки выключали ночью, но их состояние сбрасывается при наступлении дня
 defineRule('ENABLE_ALL_BACKLIGHTS_ON_DAY', {

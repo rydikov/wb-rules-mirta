@@ -34,6 +34,44 @@ export const MSWs: Record<string, MSW> = {
   Cabinet: new MSW('wb-msw-v4_126'),
 }
 
+export const backlightControls: WbRules.ControlOptionsTree = {
+  cabinet: {
+    title: 'Подсветка в кабинете',
+    type: 'switch',
+    value: true,
+  },
+  main_staircase: {
+    title: 'Подсветка основной лестницы',
+    type: 'switch',
+    value: true,
+  },
+  first_floor: {
+    title: 'Подсветка первого этажа',
+    type: 'switch',
+    value: true,
+  },
+  second_floor: {
+    title: 'Подсветка второго этажа',
+    type: 'switch',
+    value: true,
+  },
+  bathroom_first_floor: {
+    title: 'Подсветка санузла на первом этаже',
+    type: 'switch',
+    value: true,
+  },
+  bathroom_second_floor: {
+    title: 'Подсветка ванной комнаты на втором этаже',
+    type: 'switch',
+    value: true,
+  },
+  toilet_second_floor: {
+    title: 'Подсветка в туалете на втором этаже',
+    type: 'switch',
+    value: true,
+  },
+}
+
 // Диммируемый свет на MDM3, в настройках модуля должны быть установки для лампы
 // export const DimmableLights: Record<string, DimmableLight> = {
 //   Cabinet: new DimmableLight('wb-mdm3_77/K1'),
