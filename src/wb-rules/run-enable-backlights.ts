@@ -1,0 +1,22 @@
+import { AstroTimer } from '#wbm/global-devices'
+import { backlightControls } from '#wb/backlights'
+
+// Если подсветки выключали ночью, но их состояние сбрасывается при наступлении дня
+defineRule('ENABLE_ALL_BACKLIGHTS_ON_DAY', {
+  asSoonAs: function () {
+    return AstroTimer.isDay
+  },
+  then: function () {
+    const backlightsDevice = getDevice('Backlights')
+    if (backlightsDevice === undefined) {
+      log.error('Устройство Backlights не найдено')
+      return
+    }
+
+    for (const controlName in backlightControls) {
+      backlightsDevice.getControl(controlName).setValue(true)
+    }
+
+    log.debug('Все подсветки включены: наступил день по астротаймеру')
+  },
+})
