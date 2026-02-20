@@ -41,9 +41,9 @@ export function makeBacklightRule(
       // Проверяем, событие ли это от геркона
       const isDoorEvent = doorSensorTopic && devName === doorSensorTopic
 
-      log.debug('Подсветка: движение={}, дверь={}, подсветка включена={}, ночь={}, состояние освещения={}',
+      log.info('Подсветка: движение={}, дверь={}, подсветка включена={}, ночь={}, состояние освещения={}',
         isMotionEvent, isDoorEvent, isBacklightEnabled, isNight, isBacklightOn)
-      log.debug('Новое значение: {} от устройства: {}', newValue, devName)
+      log.info('Новое значение: {} от устройства: {}', newValue, devName)
 
       // Обработка изменения условий (ручное включение подсветки или день/ночь)
       if (!isMotionEvent && !isDoorEvent) {
@@ -51,7 +51,7 @@ export function makeBacklightRule(
         // Выключаем свет, если подсветка отключена или сейчас день
         if ((!isBacklightEnabled || !isNight) && isBacklightOn) {
           backlightDevice.off()
-          log.debug('Подсветка выключена')
+          log.info('Подсветка выключена')
         }
       }
 
@@ -64,7 +64,7 @@ export function makeBacklightRule(
       const presenceStatus = isMotionEvent ? newValue : presenceDevice.presenceStatus
 
       if (presenceStatus || isDoorEvent) {
-        log.debug('Подсветка включена (обнаружено движение или открытие двери)')
+        log.info('Подсветка включена (обнаружено движение или открытие двери)')
         backlightDevice.on()
         resetMotionTimer()
       }
@@ -72,7 +72,7 @@ export function makeBacklightRule(
         resetMotionTimer()
         motionTimer = setTimeout(function () {
           backlightDevice.off()
-          log.debug('Подсветка выключена (таймаут движения)')
+          log.info('Подсветка выключена (таймаут движения)')
           motionTimer = null
         }, timeoutMs) as unknown as number
       }

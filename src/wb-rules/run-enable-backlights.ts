@@ -16,6 +16,6 @@ defineRule('ENABLE_ALL_BACKLIGHTS_ON_DAY', {
       backlightsDevice.getControl(controlName).setValue(true)
     }
 
-    log.debug('Все подсветки включены: наступил день по астротаймеру')
+    log.info('Все подсветки включены: наступил день по астротаймеру')
   },
 })
