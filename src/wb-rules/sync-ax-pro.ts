@@ -21,8 +21,8 @@ const ciaToState: Record<string, number> = {
 
 const partitionsWithDevices: Record<string, AxProArea> = {
   '01': AxProAreas.GroundFloor,
-  '02': AxProAreas.Bar,
-  '03': AxProAreas.Outdoor,
+  '02': AxProAreas.Outdoor,
+  '03': AxProAreas.Bar,
 }
 
 const cells: WbRules.ControlOptionsTree = {}

@@ -95,8 +95,8 @@ export enum axProStatesEnum {
 
 export const AxProAreas: Record<string, AxProArea> = {
   GroundFloor: new AxProArea('AxPro/state_01', 'Подвал'),
-  Bar: new AxProArea('AxPro/state_02', 'Бар'),
-  Outdoor: new AxProArea('AxPro/state_03', 'Улица'),
+  Bar: new AxProArea('AxPro/state_02', 'Улица'),
+  Outdoor: new AxProArea('AxPro/state_03', 'Бар'),
 }
 
 // Астрономический таймер
