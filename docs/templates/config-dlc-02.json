@@ -1,0 +1,92 @@
+{
+  "device_type": "dlc-02",
+  "title": "DLC-02 MEAN WELL (Modbus TCP - DALI gateway)",
+  "group": "g-adapter",
+  "device": {
+    "name": "DLC-02",
+    "id": "dlc-02",
+    "groups": [
+      {
+        "title": "Group Scenes",
+        "id": "group_scenes"
+      },
+      {
+        "title": "Status",
+        "id": "status"
+      }
+    ],
+    "channels": [
+      {
+        "id": "group_0_scene_0",
+        "name": "Group 0 Scene 0",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x0180030000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "control"
+      },
+      {
+        "id": "group_0_scene_1",
+        "name": "Group 0 Scene 1",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x0180030100000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "control"
+      },
+      {
+        "id": "group_0_scene_2",
+        "name": "Group 0 Scene 2",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x0180030200000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "control"
+      },
+      {
+        "id": "group_0_off",
+        "name": "Group 0 Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x0180010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "control"
+      },
+      {
+        "id": "group_all_off",
+        "name": "Group All Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x01FF010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "control"
+      }
+    ],
+    "parameters": {},
+    "translations": {
+      "en": {
+        "dlc-02_template_title": "DLC-02"
+      },
+      "ru": {
+        "dlc-02_template_title": "DLC-02",
+        "Control": "Управление",
+        "Status": "Статус",
+        "Group 0 Scene 0": "Группа 0 Сцена 0",
+        "Group 0 Scene 1": "Группа 0 Сцена 1",
+        "Group 0 Scene 2": "Группа 0 Сцена 2",
+        "Group 0 Off": "Группа 0 Выключить",
+        "Group All Off": "Выключить все группы"
+      }
+    }
+  }
+}
