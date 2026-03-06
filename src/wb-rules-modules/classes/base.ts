@@ -1,14 +1,16 @@
 // Базовый класс для устройств
 export class DeviceBasedClass {
 
-  device: WbRules.Device | undefined
   name: string
 
   constructor(
     name: string
   ) {
-    this.device = getDevice(name)
     this.name = name
+  }
+
+  get device() {
+    return getDevice(this.name)
   }
 
 }
@@ -17,14 +19,16 @@ export class DeviceBasedClass {
 // Для каждого контрола создается отдельный управляющий класс
 export class ControlBasedClass {
 
-  control: WbRules.Control | undefined
   name: string
 
   constructor(
     name: string
   ) {
-    this.control = getControl(name)
     this.name = name
+  }
+
+  get control() {
+    return getControl(this.name)
   }
 
   get topic() {

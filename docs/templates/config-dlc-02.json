@@ -11,6 +11,10 @@
         "id": "group_scenes"
       },
       {
+        "title": "Relay Control",
+        "id": "relay_control"
+      },
+      {
         "title": "Status",
         "id": "status"
       }
@@ -25,7 +29,7 @@
         "on_value": "0x0180030000000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "control"
+        "group": "group_scenes"
       },
       {
         "id": "group_0_scene_1",
@@ -36,7 +40,7 @@
         "on_value": "0x0180030100000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "control"
+        "group": "group_scenes"
       },
       {
         "id": "group_0_scene_2",
@@ -47,7 +51,7 @@
         "on_value": "0x0180030200000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "control"
+        "group": "group_scenes"
       },
       {
         "id": "group_0_off",
@@ -58,7 +62,7 @@
         "on_value": "0x0180010000000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "control"
+        "group": "group_scenes"
       },
       {
         "id": "group_all_off",
@@ -69,7 +73,59 @@
         "on_value": "0x01FF010000000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "control"
+        "group": "group_scenes"
+      },
+      {
+        "id": "relay_1",
+        "name": "Control relay 1",
+        "address": 33001,
+        "write_address": 43001,
+        "reg_type": "holding_multi",
+        "format": "u16",
+        "on_value": "0x0100",
+        "off_value": "0x0000",
+        "sporadic": false,
+        "type": "switch",
+        "group": "relay_control"
+      },
+      {
+        "id": "relay_2",
+        "name": "Control relay 2",
+        "address": 33002,
+        "write_address": 43002,
+        "reg_type": "holding_multi",
+        "format": "u16",
+        "on_value": "0x0100",
+        "off_value": "0x0000",
+        "sporadic": false,
+        "type": "switch",
+        "group": "relay_control"
+      },
+      {
+        "id": "relay_3",
+        "name": "Control relay 3",
+        "address": 33003,
+        "write_address": 43003,
+        "reg_type": "holding_multi",
+        "format": "u16",
+        "on_value": "0x0100",
+        "off_value": "0x0000",
+        "sporadic": false,
+        "type": "switch",
+        "group": "relay_control"
+      },
+      {
+        "id": "relay_4",
+        "name": "Control relay 4",
+        "address": 33004,
+        "write_address": 43004,
+        "reg_type": "holding_multi",
+        "format": "u16",
+        "on_value": "0x0100",
+        "off_value": "0x0000",
+        "sporadic": false,
+        "type": "switch",
+        "group": "relay_control"
       }
     ],
     "parameters": {},
@@ -79,12 +135,17 @@
       },
       "ru": {
         "dlc-02_template_title": "DLC-02",
-        "Control": "Управление",
+        "Group Scenes": "Групповые сцены",
+        "Relay Control": "Управление реле",
         "Status": "Статус",
         "Group 0 Scene 0": "Группа 0 Сцена 0",
         "Group 0 Scene 1": "Группа 0 Сцена 1",
         "Group 0 Scene 2": "Группа 0 Сцена 2",
         "Group 0 Off": "Группа 0 Выключить",
+        "Control relay 1": "Управление реле 1",
+        "Control relay 2": "Управление реле 2",
+        "Control relay 3": "Управление реле 3",
+        "Control relay 4": "Управление реле 4",
         "Group All Off": "Выключить все группы"
       }
     }
