@@ -7,8 +7,8 @@
     "id": "dlc-02",
     "groups": [
       {
-        "title": "Group Scenes",
-        "id": "group_scenes"
+        "title": "Buss A",
+        "id": "buss_a"
       },
       {
         "title": "Relay Control",
@@ -21,59 +21,59 @@
     ],
     "channels": [
       {
-        "id": "group_0_scene_0",
-        "name": "Group 0 Scene 0",
+        "id": "buss_a_scene_0",
+        "name": "Buss A Scene 0",
         "address": 41001,
         "reg_type": "holding_multi",
         "format": "u64",
         "on_value": "0x0180030000000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "group_scenes"
+        "group": "buss_a"
       },
       {
-        "id": "group_0_scene_1",
-        "name": "Group 0 Scene 1",
+        "id": "buss_a_scene_1",
+        "name": "Buss A Scene 1",
         "address": 41001,
         "reg_type": "holding_multi",
         "format": "u64",
-        "on_value": "0x0180030100000000",
+        "on_value": "0x01FF030100000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "group_scenes"
+        "group": "buss_a"
       },
       {
-        "id": "group_0_scene_2",
-        "name": "Group 0 Scene 2",
+        "id": "buss_a_scene_2",
+        "name": "Buss A Scene 2",
         "address": 41001,
         "reg_type": "holding_multi",
         "format": "u64",
-        "on_value": "0x0180030200000000",
+        "on_value": "0x01FF030200000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "group_scenes"
+        "group": "buss_a"
       },
       {
-        "id": "group_0_off",
-        "name": "Group 0 Off",
-        "address": 41001,
-        "reg_type": "holding_multi",
-        "format": "u64",
-        "on_value": "0x0180010000000000",
-        "sporadic": false,
-        "type": "pushbutton",
-        "group": "group_scenes"
-      },
-      {
-        "id": "group_all_off",
-        "name": "Group All Off",
+        "id": "buss_a_group_0_off",
+        "name": "Buss A Group 0 Off",
         "address": 41001,
         "reg_type": "holding_multi",
         "format": "u64",
         "on_value": "0x01FF010000000000",
         "sporadic": false,
         "type": "pushbutton",
-        "group": "group_scenes"
+        "group": "buss_a"
+      },
+      {
+        "id": "buss_a_all_groups_off",
+        "name": "Buss A All Groups Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x01FF010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_a"
       },
       {
         "id": "relay_1",
@@ -135,18 +135,18 @@
       },
       "ru": {
         "dlc-02_template_title": "DLC-02",
-        "Group Scenes": "Групповые сцены",
+        "Buss A": "Шина А",
         "Relay Control": "Управление реле",
         "Status": "Статус",
-        "Group 0 Scene 0": "Группа 0 Сцена 0",
-        "Group 0 Scene 1": "Группа 0 Сцена 1",
-        "Group 0 Scene 2": "Группа 0 Сцена 2",
-        "Group 0 Off": "Группа 0 Выключить",
+        "Buss A Scene 0": "Шина А: Сцена 0",
+        "Buss A Scene 1": "Шина А: Сцена 1",
+        "Buss A Scene 2": "Шина А: Сцена 2",
+        "Buss A Group 0 Off": "Шина A: Группа 0 Выкл",
         "Control relay 1": "Управление реле 1",
         "Control relay 2": "Управление реле 2",
         "Control relay 3": "Управление реле 3",
         "Control relay 4": "Управление реле 4",
-        "Group All Off": "Выключить все группы"
+        "Buss A All Groups Off": "Шина А: Выключить все группы"
       }
     }
   }
