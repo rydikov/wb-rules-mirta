@@ -86,35 +86,85 @@ function parseStatus(byte4: number): boolean {
   return (byte4 & 0x04) !== 0
 }
 
+/**
+ * Проверяет, является ли ответ error frame, и возвращает детализацию ошибки.
+ *
+ * По спецификации:
+ * - Byte 3 = 7 -> Error message
+ * - Byte 7 = код ошибки:
+ *   - 1 -> DALI line short circuit
+ *   - 2 -> DALI receive error
+ *
+ * Если ошибки нет, возвращает `null`.
+ */
+function checkErrorFrame(frame: number[]): string | null {
+  if (frame[3] !== 7) {
+    return null
+  }
+
+  const errorCode = frame[7]
+  let errorDetails = 'Unknown error'
+
+  if (errorCode === 1) {
+    errorDetails = 'DALI line short circuit'
+  }
+  else if (errorCode === 2) {
+    errorDetails = 'DALI receive error'
+  }
+
+  return 'Error: {} ({})'.format(errorCode, errorDetails)
+}
+
 interface RpcReplyPayload {
   result: {
     response: string
   }
 }
 
+// Обновляем цветовую температуру
 trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/ct-request/reply', (message: { topic: string, value: string }) => {
   log.info('MQTT replay ct-request topic value: {}'.format(message.value))
   const payload = JSON.parse(message.value) as RpcReplyPayload
   const frame = hexToFrame(payload.result.response)
+
+  const errorDetails = checkErrorFrame(frame)
+  if (errorDetails !== null) {
+    log.error('ct-request failed: {}'.format(errorDetails))
+    return
+  }
+
   const colorTemperature = parseColourTemperature(frame[4], frame[5])
-  log.info(colorTemperature)
   getDevice('Lamp0')?.getControl('color_temperature').setValue(colorTemperature)
 })
 
+// Обновляем яркость
 trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/brightness-request/reply', (message: { topic: string, value: string }) => {
   log.info('MQTT replay brightness-request topic value: {}'.format(message.value))
   const payload = JSON.parse(message.value) as RpcReplyPayload
   const frame = hexToFrame(payload.result.response)
+
+  const errorDetails = checkErrorFrame(frame)
+  if (errorDetails !== null) {
+    log.error('brightness-request failed: {}'.format(errorDetails))
+    return
+  }
+
   const brightness = parseBrightness(frame[4])
-  log.info(brightness)
   getDevice('Lamp0')?.getControl('brightness').setValue(brightness)
 })
 
+// Обновляем статус
 trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/status-request/reply', (message: { topic: string, value: string }) => {
   log.info('MQTT replay status-request topic value: {}'.format(message.value))
   const payload = JSON.parse(message.value) as RpcReplyPayload
   const frame = hexToFrame(payload.result.response)
+
+  const errorDetails = checkErrorFrame(frame)
+  if (errorDetails !== null) {
+    log.error('status-request failed: {}'.format(errorDetails))
+    return
+  }
+
   const status = parseStatus(frame[4])
-  log.info(status)
   getDevice('Lamp0')?.getControl('status').setValue(status)
 })
