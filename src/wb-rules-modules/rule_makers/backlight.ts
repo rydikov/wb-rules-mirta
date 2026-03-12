@@ -1,12 +1,17 @@
 import { AstroTimer } from '#wbm/global-devices'
-import { RelayLight } from '#wbm/classes/wb'
 import { MTDX62MB } from '#wbm/classes/mtdx62-mb'
+
+type onFuncType = () => void
+type offFuncType = () => void
+type valueFuncType = () => boolean
 
 export function makeBacklightRule(
   ruleName: string,
   presenceDevice: MTDX62MB,
   backlightControl: string,
-  backlightDevice: RelayLight,
+  backlightOnFunc: onFuncType,
+  backlightOffFunc: offFuncType,
+  backlightValueFunc: valueFuncType,
   timeoutMs = 120000,
   doorSensorTopic?: string
 ) {
@@ -34,7 +39,7 @@ export function makeBacklightRule(
     then: function (newValue, devName) {
       const isNight = !AstroTimer.isDay
       const isBacklightEnabled = Boolean(getControl(backlightControl)?.getValue())
-      const isBacklightOn = Boolean(backlightDevice.value())
+      const isBacklightOn = backlightValueFunc()
 
       // Проверяем, событие ли это движения
       const isMotionEvent = devName === presenceDevice.name
@@ -50,7 +55,7 @@ export function makeBacklightRule(
         resetMotionTimer()
         // Выключаем свет, если подсветка отключена или сейчас день
         if ((!isBacklightEnabled || !isNight) && isBacklightOn) {
-          backlightDevice.off()
+          backlightOffFunc()
           log.info('Подсветка выключена')
         }
       }
@@ -65,13 +70,13 @@ export function makeBacklightRule(
 
       if (presenceStatus || isDoorEvent) {
         log.info('Подсветка включена (обнаружено движение или открытие двери)')
-        backlightDevice.on()
+        backlightOnFunc()
         resetMotionTimer()
       }
       else {
         resetMotionTimer()
         motionTimer = setTimeout(function () {
-          backlightDevice.off()
+          backlightOffFunc()
           log.info('Подсветка выключена (таймаут движения)')
           motionTimer = null
         }, timeoutMs) as unknown as number

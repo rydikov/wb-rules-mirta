@@ -8,6 +8,18 @@ beforeEach(() => {
   simulator.reset()
 })
 
+const onFunc = (): void => {
+  RelayLights.Cabinet_01.on()
+}
+
+const offFunc = (): void => {
+  RelayLights.Cabinet_01.off()
+}
+
+const valueFunc = (): boolean => {
+  return RelayLights.Cabinet_01.isOn()
+}
+
 describe('useBacklight', () => {
   beforeEach(() => {
     RelayLights.Cabinet_01.setValue(false)
@@ -15,15 +27,17 @@ describe('useBacklight', () => {
       'TEST_BACKLIGHT',
       PresenceSensors.Cabinet,
       'Backlights/cabinet',
-      RelayLights.Cabinet_01,
+      onFunc,
+      offFunc,
+      valueFunc,
       120000
     )
   })
 
-  it('starts with cabinet relay off in test setup', () => {
-    const isTrue = true
-    expect(isTrue).toBe(true)
-  })
+  //   it('starts with cabinet relay off in test setup', () => {
+  //     const isTrue = true
+  //     expect(isTrue).toBe(true)
+  //   })
 
   // it('presence emulate', () => {
   //   simulator.defineRule.run({ topic: PresenceSensors.Cabinet.presenceStatusTopic, value: 1 })

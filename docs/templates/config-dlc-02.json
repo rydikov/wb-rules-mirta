@@ -59,7 +59,7 @@
         "address": 41001,
         "reg_type": "holding_multi",
         "format": "u64",
-        "on_value": "0x01FF010000000000",
+        "on_value": "0x0180010000000000",
         "sporadic": false,
         "type": "pushbutton",
         "group": "buss_a"

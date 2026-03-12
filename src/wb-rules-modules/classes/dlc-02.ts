@@ -1,5 +1,8 @@
 import { toHex, toBinary, binaryToHex } from '#wbm/helpers'
 
+const FUNCTION_16 = 16 // Write Multiple Registers
+const FUNCTION_23 = 23 // Read Write Multiple Registers
+
 /**
 * Принцип формирования адреса устройства
 * | Bit7 | Bit6 | Bit5 | Bit4 | Bit3 | Bit2 | Bit1 | Bit0 |
@@ -95,25 +98,62 @@ export class DLC02 {
    * - `runScene('01', 10, '82')` -> группа 1, сцена 10
    *
    * Номер сцены передается от 0 до 15, в hex переводится автоматически
-   **/
+  **/
   runScene(bus: string, scene: number, address = 'FF'): void {
     const msg = bus + address + '03' + toHex(scene) + '00000000'
-    this.publishRpcMessage('scene-runner', msg, 16, 41001, 4, null, null)
+    this.publishRpcMessage('scene-runner', msg, FUNCTION_16, 41001, 4, null, null)
   }
 
+  // Выключаем все лампы в группе
+  offGroup(bus: string, groupNumber: number): void {
+    const msg = bus + getGroupAddress(groupNumber) + '01' + '00' + '00000000'
+    this.publishRpcMessage('group-off', msg, FUNCTION_16, 41001, 4, null, null)
+  }
+
+  // Включаем все лампы в группе
+  onGroup(bus: string, groupNumber: number): void {
+    const msg = bus + getGroupAddress(groupNumber) + '01' + '01' + '00000000'
+    this.publishRpcMessage('group-off', msg, FUNCTION_16, 41001, 4, null, null)
+  }
+
+  // Установка яркости для группы или одиничного устройства
+  setBrightness(bus: string, address: string, value: number): void {
+    const msg = bus + address + '02' + toHex(value) + '00000000'
+    this.publishRpcMessage('brightness-set', msg, FUNCTION_16, 41001, 4, null, null)
+  }
+
+  // Установка цветовой температуры для группы или одиничного устройства (TC)
+  setColorTemperature(bus: string, address: string, value: number): void {
+    const highByte = toHex((value >> 8) & 0xFF)
+    const lowByte = toHex(value & 0xFF)
+    const msg = bus + address + '05' + '01' + highByte + lowByte + '0000'
+    this.publishRpcMessage('color-temperature-set', msg, FUNCTION_16, 41001, 4, null, null)
+  }
+
+  /** Описание последнего байта в msg
+  Query selection:
+  1: Current brightness value
+  2: Status value
+  3: current colour type
+  4: Current colour temperature value
+  5: Warmest colour temperature value
+  6: Coolest colour temperature value
+  7: Current RGB colour value
+  8: Current RGBW colour value
+  */
   sendBrightnessRequest(bus: string, address: string): void {
     const msg = '01' + bus + address + '01'
-    this.publishRpcMessage('brightness-request', msg, 23, 32001, 4, 42001, 2)
+    this.publishRpcMessage('brightness-request', msg, FUNCTION_23, 32001, 4, 42001, 2)
   }
 
   sendStatusRequest(bus: string, address: string): void {
     const msg = '01' + bus + address + '02'
-    this.publishRpcMessage('status-request', msg, 23, 32001, 4, 42001, 2)
+    this.publishRpcMessage('status-request', msg, FUNCTION_23, 32001, 4, 42001, 2)
   }
 
   sendColorTemperatureRequest(bus: string, address: string): void {
     const msg = '01' + bus + address + '04'
-    this.publishRpcMessage('ct-request', msg, 23, 32001, 4, 42001, 2)
+    this.publishRpcMessage('ct-request', msg, FUNCTION_23, 32001, 4, 42001, 2)
   }
 
 }

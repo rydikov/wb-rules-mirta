@@ -1,10 +1,27 @@
 import { PresenceSensors, RelayLights } from '#wbm/global-devices'
 import { makeBacklightRule } from '#wbm/rule_makers/backlight'
+import { dlc02 } from '#wbm/global-devices'
+
+const onFunc = (): void => {
+  RelayLights.Cabinet_01.on()
+  dlc02.runScene('01', 2)
+}
+
+const offFunc = (): void => {
+  RelayLights.Cabinet_01.off()
+  dlc02.offGroup('01', 0)
+}
+
+const valueFunc = (): boolean => {
+  return RelayLights.Cabinet_01.isOn()
+}
 
 makeBacklightRule(
   'CABINET_BACKLIGHT',
   PresenceSensors.Cabinet,
   'Backlights/cabinet',
-  RelayLights.Cabinet_01,
+  onFunc,
+  offFunc,
+  valueFunc,
   120000
 )
