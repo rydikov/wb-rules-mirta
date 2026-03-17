@@ -1,0 +1,115 @@
+{
+  "device_type": "dlc-02",
+  "title": "DLC-02 MEAN WELL (Modbus TCP - DALI gateway)",
+  "group": "g-adapter",
+  "device": {
+    "name": "DLC-02",
+    "id": "dlc-02",
+    "groups": [
+      {
+        "title": "Buss A",
+        "id": "buss_a"
+      },
+      {
+        "title": "Relay Control",
+        "id": "relay_control"
+      },
+      {
+        "title": "Status",
+        "id": "status"
+      }
+    ],
+    "channels": [
+      {% for scene in range(16) %}
+      {
+        "id": "buss_a_scene_{{ scene }}",
+        "name": "Buss A Scene {{ scene }}",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x01FF03{{ '%02X' % scene }}00000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_a"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %},
+      {% for group in range(16) %}
+      {
+        "id": "buss_a_group_{{ group }}_off",
+        "name": "Buss A Group {{ group }} Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x018{{ '%X' % group }}010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_a"
+      },
+      {% endfor %}
+      {% for group in range(16) %}
+      {
+        "id": "buss_a_group_{{ group }}_on",
+        "name": "Buss A Group {{ group }} On",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x018{{ '%X' % group }}010100000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_a"
+      },
+      {% endfor %}
+      {
+        "id": "buss_a_all_groups_off",
+        "name": "Buss A All Groups Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x01FF010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_a"
+      },
+      {% for relay in range(1, 5) %}
+      {
+        "id": "relay_{{ relay }}",
+        "name": "Control relay {{ relay }}",
+        "address": {{ 33000 + relay }},
+        "write_address": {{ 43000 + relay }},
+        "reg_type": "holding_multi",
+        "format": "u16",
+        "on_value": "0x0100",
+        "off_value": "0x0000",
+        "sporadic": false,
+        "type": "switch",
+        "group": "relay_control"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ],
+    "parameters": {},
+    "translations": {
+      "en": {
+        "dlc-02_template_title": "DLC-02"
+      },
+      "ru": {
+        "dlc-02_template_title": "DLC-02",
+        "Buss A": "Шина А",
+        "Relay Control": "Управление реле",
+        "Status": "Статус",
+        {% for scene in range(16) %}
+        "Buss A Scene {{ scene }}": "Шина А: Сцена {{ scene }}",
+        {% endfor %}
+        {% for group in range(16) %}
+        "Buss A Group {{ group }} Off": "Шина A: Группа {{ group }} Выкл",
+        {% endfor %}
+        {% for group in range(16) %}
+        "Buss A Group {{ group }} On": "Шина A: Группа {{ group }} Вкл",
+        {% endfor %}
+        {% for relay in range(1, 5) %}
+        "Control relay {{ relay }}": "Управление реле {{ relay }}",
+        {% endfor %}
+        "Buss A All Groups Off": "Шина А: Выключить все группы"
+      }
+    }
+  }
+}

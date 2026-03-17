@@ -2,38 +2,47 @@ import { getDeviceAddress, getGroupAddress } from '#wbm/classes/dlc-02'
 import { dlc02 } from '#wbm/global-devices'
 import { formatTimestampES5 } from '#wbm/helpers'
 
-defineVirtualDevice('dali_group_0', {
-  title: 'G00 Кабинет: Точечные светильники',
+defineVirtualDevice('dali_groups', {
+  title: 'Dali Groups Tester',
   cells: {
-    status: {
-      order: 10,
-      title: 'Группа включена',
-      type: 'switch',
-      value: false,
-      readonly: true,
-    },
-    update: {
-      order: 20,
-      title: 'Обновить',
-      type: 'pushbutton',
-    },
-    updated: {
-      order: 30,
-      title: 'Обновлено',
+    buss_id: {
+      order: 0,
+      title: 'Шина',
       type: 'text',
-      value: '',
-    },
-    color_temperature: {
-      order: 40,
-      title: 'Цветовая температура',
-      type: 'range',
-      min: 2700,
-      max: 6500,
-      value: 2700,
+      value: '01',
       readonly: false,
+      enum: {
+        '01': { en: 'A', ru: 'A' },
+        '02': { en: 'B', ru: 'B' },
+      },
+    },
+    group_id: {
+      order: 10,
+      title: 'ID Группы',
+      type: 'value',
+      value: 0,
+      readonly: false,
+      enum: {
+        0: { en: '0', ru: '0' },
+        1: { en: '1', ru: '1' },
+        2: { en: '2', ru: '2' },
+        3: { en: '3', ru: '3' },
+        4: { en: '4', ru: '4' },
+        5: { en: '5', ru: '5' },
+        6: { en: '6', ru: '6' },
+        7: { en: '7', ru: '7' },
+        8: { en: '8', ru: '8' },
+        9: { en: '9', ru: '9' },
+        10: { en: '10', ru: '10' },
+        11: { en: '11', ru: '11' },
+        12: { en: '12', ru: '12' },
+        13: { en: '13', ru: '13' },
+        14: { en: '14', ru: '14' },
+        15: { en: '15', ru: '15' },
+      },
     },
     brightness: {
-      order: 50,
+      order: 20,
       title: 'Яркость',
       type: 'range',
       min: 0,
@@ -41,48 +50,94 @@ defineVirtualDevice('dali_group_0', {
       value: 0,
       readonly: false,
     },
+    color_temperature: {
+      order: 30,
+      title: 'Цветовая температура',
+      type: 'range',
+      min: 2700,
+      max: 6500,
+      value: 2700,
+      readonly: false,
+    },
+
+    device_id: {
+      order: 40,
+      title: 'ID устройства для синхронизации',
+      type: 'value',
+      value: 0,
+      readonly: false,
+      min: 0,
+      max: 63,
+    },
+    update: {
+      order: 50,
+      title: 'Синхронизировать',
+      type: 'pushbutton',
+    },
+    updated: {
+      order: 60,
+      title: 'Обновлено',
+      type: 'text',
+      value: '',
+    },
+    status_updated: {
+      order: 70,
+      title: 'Статус',
+      type: 'text',
+      value: '',
+    },
+    color_temperature_updated: {
+      order: 80,
+      title: 'Цветовая температура',
+      type: 'text',
+      value: '',
+    },
+    brightness_updated: {
+      order: 90,
+      title: 'Яркость',
+      type: 'text',
+      value: '',
+    },
   },
 })
 
-defineRule('DALI_GROUP_0_SETUP_BRIGHTNESS', {
-  whenChanged: 'dali_group_0/brightness',
+defineRule('DALI_GROUP_SET_BRIGHTNESS', {
+  whenChanged: 'dali_groups/brightness',
   then: function (newValue: number) {
-    dlc02.setBrightness('01', getGroupAddress(0), newValue)
+    const groupAddress = Number(getDevice('dali_groups')?.getControl('group_id').getValue())
+    const bussID = String(getDevice('dali_groups')?.getControl('buss_id').getValue())
+
+    dlc02.setBrightness(bussID, getGroupAddress(groupAddress), newValue)
   },
 })
 
-// defineRule('DALI_GROUP_0_SETUP_STATUS', {
-//   whenChanged: 'dali_group_0/status',
-//   then: function (newValue: boolean) {
-//     if (newValue) {
-//       dlc02.onGroup('01', 0)
-//     }
-//     else {
-//       dlc02.offGroup('01', 0)
-//     }
-//   },
-// })
-
-defineRule('DALI_GROUP_0_SETUP_COLOR_TEMPERATURE', {
-  whenChanged: 'dali_group_0/color_temperature',
+defineRule('DALI_GROUP_SET_COLOR_TEMPERATURE', {
+  whenChanged: 'dali_groups/color_temperature',
   then: function (newValue: number) {
-    dlc02.setColorTemperature('01', getGroupAddress(0), newValue)
+    const groupAddress = Number(getDevice('dali_groups')?.getControl('group_id').getValue())
+    const bussID = String(getDevice('dali_groups')?.getControl('buss_id').getValue())
+
+    dlc02.setColorTemperature(bussID, getGroupAddress(groupAddress), newValue)
   },
 })
 
-defineRule('CHECK_DALI_LAMP_0', {
-  whenChanged: 'dali_group_0/update',
+defineRule('CHECK_DALI_LAMP', {
+  whenChanged: 'dali_groups/update',
   then: function () {
-    const lampAddress = getDeviceAddress(1)
-    log.info('get-ct request')
-    dlc02.sendColorTemperatureRequest('01', lampAddress)
-    log.info('get-brightness request')
-    dlc02.sendBrightnessRequest('01', lampAddress)
-    log.info('get-status request')
-    dlc02.sendStatusRequest('01', lampAddress)
+    const lampAddress = getDevice('dali_groups')?.getControl('device_id').getValue()
+    const deviceLampAddress = getDeviceAddress(Number(lampAddress))
+
+    const bussID = String(getDevice('dali_groups')?.getControl('buss_id').getValue())
+
+    log.info('get-ct request for lamp {} on buss {}'.format(deviceLampAddress, bussID))
+    dlc02.sendColorTemperatureRequest(bussID, deviceLampAddress)
+    log.info('get-brightness request for lamp {} on buss {}'.format(deviceLampAddress, bussID))
+    dlc02.sendBrightnessRequest(bussID, deviceLampAddress)
+    log.info('get-status request for lamp {} on buss {}'.format(deviceLampAddress, bussID))
+    dlc02.sendStatusRequest(bussID, deviceLampAddress)
 
     const now = new Date()
-    getDevice('dali_group_0')?.getControl('updated').setValue(formatTimestampES5(now.getTime()))
+    getDevice('dali_groups')?.getControl('updated').setValue(formatTimestampES5(now.getTime()))
   },
 })
 
@@ -174,11 +229,12 @@ trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/ct-request/reply', (message: { topic
   const errorDetails = checkErrorFrame(frame)
   if (errorDetails !== null) {
     log.error('ct-request failed: {}'.format(errorDetails))
+    getDevice('dali_groups')?.getControl('color_temperature_updated').setValue('Failed: {}'.format(errorDetails))
     return
   }
 
   const colorTemperature = parseColourTemperature(frame[4], frame[5])
-  getDevice('dali_group_0')?.getControl('color_temperature').setValue(colorTemperature)
+  getDevice('dali_groups')?.getControl('color_temperature_updated').setValue('{} K'.format(colorTemperature))
 })
 
 // Обновляем яркость
@@ -190,11 +246,12 @@ trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/brightness-request/reply', (message:
   const errorDetails = checkErrorFrame(frame)
   if (errorDetails !== null) {
     log.error('brightness-request failed: {}'.format(errorDetails))
+    getDevice('dali_groups')?.getControl('brightness_updated').setValue('Failed: {}'.format(errorDetails))
     return
   }
 
   const brightness = parseBrightness(frame[4])
-  getDevice('dali_group_0')?.getControl('brightness').setValue(brightness)
+  getDevice('dali_groups')?.getControl('brightness_updated').setValue(brightness.toString())
 })
 
 // Обновляем статус
@@ -206,9 +263,11 @@ trackMqtt('/rpc/v1/wb-mqtt-serial/port/Load/status-request/reply', (message: { t
   const errorDetails = checkErrorFrame(frame)
   if (errorDetails !== null) {
     log.error('status-request failed: {}'.format(errorDetails))
+    getDevice('dali_groups')?.getControl('status_updated').setValue('Failed: {}'.format(errorDetails))
     return
   }
 
-  const status = parseStatus(frame[4])
-  getDevice('dali_group_0')?.getControl('status').setValue(status)
+  const status = parseStatus(frame[4]) ? 'Включено' : 'Выключено'
+
+  getDevice('dali_groups')?.getControl('status_updated').setValue(status)
 })
