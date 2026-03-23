@@ -5,10 +5,15 @@
   "device": {
     "name": "DLC-02",
     "id": "dlc-02",
+    "response_timeout_ms": 20,
     "groups": [
       {
         "title": "Buss A",
         "id": "buss_a"
+      },
+      {
+        "title": "Buss B",
+        "id": "buss_b"
       },
       {
         "title": "Relay Control",
@@ -33,6 +38,19 @@
         "group": "buss_a"
       }{% if not loop.last %},{% endif %}
       {% endfor %},
+      {% for scene in range(16) %}
+      {
+        "id": "buss_b_scene_{{ scene }}",
+        "name": "Buss B Scene {{ scene }}",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x02FF03{{ '%02X' % scene }}00000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_b"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %},
       {% for group in range(16) %}
       {
         "id": "buss_a_group_{{ group }}_off",
@@ -48,6 +66,19 @@
       {% endfor %}
       {% for group in range(16) %}
       {
+        "id": "buss_b_group_{{ group }}_off",
+        "name": "Buss B Group {{ group }} Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x028{{ '%X' % group }}010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_b"
+      },
+      {% endfor %}
+      {% for group in range(16) %}
+      {
         "id": "buss_a_group_{{ group }}_on",
         "name": "Buss A Group {{ group }} On",
         "address": 41001,
@@ -57,6 +88,19 @@
         "sporadic": false,
         "type": "pushbutton",
         "group": "buss_a"
+      },
+      {% endfor %}
+      {% for group in range(16) %}
+      {
+        "id": "buss_b_group_{{ group }}_on",
+        "name": "Buss B Group {{ group }} On",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x028{{ '%X' % group }}010100000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_b"
       },
       {% endfor %}
       {
@@ -69,6 +113,17 @@
         "sporadic": false,
         "type": "pushbutton",
         "group": "buss_a"
+      },
+      {
+        "id": "buss_b_all_groups_off",
+        "name": "Buss B All Groups Off",
+        "address": 41001,
+        "reg_type": "holding_multi",
+        "format": "u64",
+        "on_value": "0x02FF010000000000",
+        "sporadic": false,
+        "type": "pushbutton",
+        "group": "buss_b"
       },
       {% for relay in range(1, 5) %}
       {
@@ -94,21 +149,32 @@
       "ru": {
         "dlc-02_template_title": "DLC-02",
         "Buss A": "Шина А",
+        "Buss B": "Шина B",
         "Relay Control": "Управление реле",
         "Status": "Статус",
         {% for scene in range(16) %}
         "Buss A Scene {{ scene }}": "Шина А: Сцена {{ scene }}",
         {% endfor %}
+        {% for scene in range(16) %}
+        "Buss B Scene {{ scene }}": "Шина B: Сцена {{ scene }}",
+        {% endfor %}
         {% for group in range(16) %}
         "Buss A Group {{ group }} Off": "Шина A: Группа {{ group }} Выкл",
         {% endfor %}
         {% for group in range(16) %}
+        "Buss B Group {{ group }} Off": "Шина B: Группа {{ group }} Выкл",
+        {% endfor %}
+        {% for group in range(16) %}
         "Buss A Group {{ group }} On": "Шина A: Группа {{ group }} Вкл",
+        {% endfor %}
+        {% for group in range(16) %}
+        "Buss B Group {{ group }} On": "Шина B: Группа {{ group }} Вкл",
         {% endfor %}
         {% for relay in range(1, 5) %}
         "Control relay {{ relay }}": "Управление реле {{ relay }}",
         {% endfor %}
-        "Buss A All Groups Off": "Шина А: Выключить все группы"
+        "Buss A All Groups Off": "Шина А: Выключить все группы",
+        "Buss B All Groups Off": "Шина B: Выключить все группы"
       }
     }
   }

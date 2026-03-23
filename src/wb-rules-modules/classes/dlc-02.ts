@@ -1,8 +1,17 @@
 import { toHex, toBinary, binaryToHex } from '#wbm/helpers'
 
+// Modbus function codes used by DLC-02
 const FUNCTION_16 = 16 // Write Multiple Registers
 const FUNCTION_23 = 23 // Read Write Multiple Registers
 
+// DLC-02 RPC reply payload
+export interface RpcReplyPayload {
+  result: {
+    response: string
+  }
+}
+
+// DALI address helpers
 /**
 * Принцип формирования адреса устройства
 * | Bit7 | Bit6 | Bit5 | Bit4 | Bit3 | Bit2 | Bit1 | Bit0 |
@@ -23,7 +32,104 @@ export function getDeviceAddress(address: number): string {
   return binaryToHex('00' + toBinary(address, 6), 2)
 }
 
-// Класс для управление Dali контроллером DLC02
+// DLC-02 reply/frame helpers
+// Парсим ответ во фрейм "0101010119870000" -> [1, 1, 1, 1, 25, 135, 0, 0]
+export function hexToFrame(hex: string): number[] {
+  const frame: number[] = []
+
+  for (let i = 0; i < hex.length; i += 2) {
+    frame.push(parseInt(hex.substring(i, i + 2), 16))
+  }
+
+  return frame
+}
+
+/**
+ * По спецификации Definition of colour temperature Byte 4 - Byte 7: colour temperature value 0(high/low):
+ * - Byte 4 = старший байт (High byte)
+ * - Byte 5 = младший байт (Low byte)
+ */
+export function parseColourTemperature(
+  byte4: number,
+  byte5: number
+): string {
+  const kelvin = (byte4 << 8) | byte5
+  return '{} K'.format(kelvin)
+}
+
+/**
+ * По спецификации Definition of brightness value (Byte 4, Byte 5-7 is 0): 0-254:
+ * - значение яркости находится в Byte 4
+ * - Byte 5-7 должны быть равны 0
+ * - значение яркости находится в диапазоне 0..254
+ */
+export function parseBrightness(byte4: number): string {
+  return byte4.toString()
+}
+
+/**
+ * По спецификации Status value definition (Byte 4, Byte 5-7 are 0): Bit 0: Drive failure, Bit 1: Lamp failure, Bit 2: The light is on:
+ * - status value находится в Byte 4
+ * - Bit 2 (byte4 & 0x04) = The light is on
+ */
+export function parseStatus(byte4: number): string {
+  return (byte4 & 0x04) !== 0 ? 'Включено' : 'Выключено'
+}
+
+/**
+ * Проверяет, является ли ответ error frame, и возвращает детализацию ошибки.
+ *
+ * По спецификации:
+ * - Byte 3 = 7 -> Error message
+ * - Byte 7 = код ошибки:
+ *   - 1 -> DALI line short circuit
+ *   - 2 -> DALI receive error
+ *
+ * Если ошибки нет, возвращает `null`.
+ */
+export function checkErrorFrame(frame: number[]): string | null {
+  if (frame[3] !== 7) {
+    return null
+  }
+
+  const errorCode = frame[7]
+  let errorDetails = 'Unknown error'
+
+  if (errorCode === 1) {
+    errorDetails = 'DALI line short circuit'
+  }
+  else if (errorCode === 2) {
+    errorDetails = 'DALI receive error'
+  }
+
+  return 'Error: {} ({})'.format(errorCode, errorDetails)
+}
+
+/**
+ * Разбирает MQTT reply и выбрасывает исключение, если ответ содержит error frame.
+ *
+ * Возвращает frame как массив байт, если ответ успешный.
+ * Если DLC-02 вернул ошибку, выбрасывает `Error` с детализацией.
+ */
+export function getReplyFrame(
+  requestName: string,
+  messageValue: string
+): number[] {
+  log.info('MQTT replay {} topic value: {}'.format(requestName, messageValue))
+
+  const payload = JSON.parse(messageValue) as RpcReplyPayload
+  const frame = hexToFrame(payload.result.response)
+  const errorDetails = checkErrorFrame(frame)
+
+  if (errorDetails !== null) {
+    log.error('{} failed: {}'.format(requestName, errorDetails))
+    throw new Error(errorDetails)
+  }
+
+  return frame
+}
+
+// DLC-02 client
 export class DLC02 {
 
   ip: string
